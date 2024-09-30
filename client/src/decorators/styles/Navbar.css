@@ -1,10 +1,17 @@
 nav {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
   padding: 0.5rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background-color: #fff;
+  width: 100%;
+  transition: all 0.3s ease;
 }
 
 nav .max-width {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -66,4 +73,51 @@ nav .menuLinks button {
 }
 nav .menuLinks button:hover {
   background-color: rgb(51, 51, 51);
+}
+nav .bar {
+  display: none;
+  cursor: pointer;
+  font-size: 25px;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 768px) {
+  nav .menuLinks {
+    position: absolute;
+    top: calc(-100vh + 1rem);
+    right: 0;
+    width: 200px;
+    z-index: 99;
+    height: calc(100vh - 100px);
+    flex-direction: column;
+    background-color: #fff;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  nav.active .menuLinks {
+    top: 100%;
+  }
+  nav .bar {
+    display: block;
+  }
+  nav .menuLinks ul li a::after {
+    display: none;
+  }
+  nav .menuLinks ul {
+    display: block;
+    width: 100%;
+  }
+  nav .menuLinks ul li {
+    width: 100%;
+  }
+  nav .max-width ul li a {
+    margin: 0.3rem 0;
+    display: inline-block;
+  }
+  nav .menuLinks ul li a:hover,
+  nav .menuLinks ul li a.active {
+    background-image: linear-gradient(45deg, var(--primaryColor), #380f5f);
+    color: #fff;
+    width: 100%;
+  }
 }

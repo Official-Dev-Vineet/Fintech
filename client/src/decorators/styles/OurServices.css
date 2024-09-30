@@ -1,0 +1,48 @@
+.services {
+  padding: 1rem;
+  margin: 10rem 0;
+}
+.ourServices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5rem;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem 0;
+}
+.ourServices .service {
+  width: clamp(250px, 50%, 350px);
+  text-align: center;
+  box-shadow: 0 30px 30px 5px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+.ourServices .service:hover{
+  box-shadow: 0 30px 30px 5px rgba(0, 0, 0, 0.5);
+  background-color: var(--primaryColor);
+  color: #fff;
+  transform: translateY(-5px);
+}
+.ourServices .service h3 {
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+}
+.ourServices .service img {
+  width: 50%;
+  height: auto;
+  object-fit: contain;
+}
+@media screen and (max-width: 768px) {
+  .services {
+    margin: 2rem 0;
+  }
+  .ourServices {
+    margin: 1rem 0;
+    gap: 1rem;
+  }
+  .ourServices .service {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+}

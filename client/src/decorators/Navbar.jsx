@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import Logo from "../utils/logo";
 import "./styles/Navbar.css";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { useState } from "react";
 const Navbar = () => {
   const menuLinks = [
     {
@@ -16,8 +18,9 @@ const Navbar = () => {
       name: "Our Services",
     },
   ];
+  const [active, setActive] = useState(false);
   return (
-    <nav>
+    <nav className={active ? "active" : ""}>
       <div className="max-width">
         <Logo />
         <div className="menuLinks">
@@ -30,10 +33,12 @@ const Navbar = () => {
           </ul>
           <button>Login</button>
         </div>
+        <div className="bar" onClick={() => setActive(!active)}>
+          <GiHamburgerMenu />
+        </div>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
-

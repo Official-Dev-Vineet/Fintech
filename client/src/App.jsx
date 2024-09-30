@@ -13,10 +13,10 @@ const App = () => {
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
-        <Route path="*" element={<ErrorPage />} />
         <Route path="/about-us" element={<Home />} />
         <Route path="/contact-us" element={<Home />} />
         <Route path="/our-services" element={<Home />} />
+        <Route path="*" element={<>404 Not Found</>} />
       </Route>
     )
   );
