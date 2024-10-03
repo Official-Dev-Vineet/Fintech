@@ -1,6 +1,7 @@
 .services {
   padding: 1rem;
   margin: 10rem 0;
+  margin-bottom: 0rem;
 }
 .ourServices {
   display: flex;

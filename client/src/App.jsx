@@ -6,21 +6,41 @@ import {
 } from "react-router-dom";
 import RootLayout from "./helper/RootLayout";
 import ErrorPage from "./helper/ErrorPage";
-import Home from "./components/Home";
+import { lazy, Suspense } from "react";
+import Loader from "./helper/Loader";
+const Home = lazy(() => import("./components/Home"));
+const AboutUs = lazy(() => import("./components/AboutUs"));
+const PrivacyPolicy = lazy(() => import("./components/Privacy"));
+const Terms = lazy(() => import("./components/Terms"));
+const Cookie = lazy(() => import("./components/Cookie"));
+const Refund = lazy(() => import("./components/Refund"));
+const Contact = lazy(() => import("./components/ContactUs"));
+const Login = lazy(() => import("./components/Login"));
+const Register = lazy(() => import("./components/Register"));
 
 const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
-        <Route path="/about-us" element={<Home />} />
-        <Route path="/contact-us" element={<Home />} />
-        <Route path="/our-services" element={<Home />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/legal/our-services" element={<Home />} />
+        <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/legal/terms-and-conditions" element={<Terms />} />
+        <Route path="/legal/cookie-policy" element={<Cookie />} />
+        <Route path="/legal/refund-policy" element={<Refund />} />
+        <Route path="/contact-us" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<>404 Not Found</>} />
       </Route>
     )
   );
-  return <RouterProvider router={routes} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      <RouterProvider router={routes} />
+    </Suspense>
+  );
 };
 
 export default App;

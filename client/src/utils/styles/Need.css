@@ -1,0 +1,20 @@
+.Need {
+  background-color: #02763d;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  z-index: 999;
+  color: #fff;
+  gap: 0.5rem;
+}
+.Need svg {
+  fill: #fff;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+}

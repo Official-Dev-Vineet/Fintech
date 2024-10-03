@@ -38,7 +38,8 @@ a {
 }
 
 button,
-input {
+input,
+textarea {
   outline: none;
   border: none;
   cursor: pointer;

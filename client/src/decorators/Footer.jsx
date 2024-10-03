@@ -1,4 +1,4 @@
-import Logo from "../utils/logo";
+import { Link } from "react-router-dom";
 import "./styles/Footer.css";
 const Footer = () => {
   const footerLinks = [
@@ -13,6 +13,11 @@ const Footer = () => {
           name: "Contact Us",
           path: "/contact-us",
         },
+        {
+          name: "Call Us",
+          path: "tel:+91 9876543210",
+        },
+        { name: "info@chagans.com", path: "mailto:info@chagans.com" },
       ],
     },
     {
@@ -62,10 +67,17 @@ const Footer = () => {
       ],
     },
   ];
+  const personalInfo = [
+    {
+      name: "Address",
+      value: `Chagans Technologies Ltd.
+              Business Centre, SCO-4, Dayal Bagh Market,
+              Sector-39, Surajkund, Faridabad - 121009 Haryana`,
+    },
+  ];
   return (
     <footer>
       <div className="footerContainer max-width">
-        <Logo />
         <div className="footerLinks">
           {footerLinks.map((footerLink, index) => (
             <div className="footerLink" key={index}>
@@ -73,12 +85,20 @@ const Footer = () => {
               <ul>
                 {footerLink.list.map((link, index) => (
                   <li key={index}>
-                    <a href={link.path}>{link.name}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
+        </div>
+        <div className="infoGroup">
+          <span>Address :</span>
+          <p>{personalInfo[0].value}</p>
+        </div>
+        <div className="copyright">
+          <h3>Chagans Technologies Ltd.</h3>
+          <p>&copy; 2024 Chagans Technologies Ltd. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

@@ -2,7 +2,7 @@ import "./styles/OurServices.css";
 const OurServices = () => {
     const service = [
         {
-          title: "Digital Payments",
+          title: "Utility Payments",
           des: "Easily process and secure your transactions with our digital payment solutions. Whether you're receiving payments from customers or paying vendors, our platform ensures a smooth and hassle-free experience.",
           icons: "https://cdn-icons-png.flaticon.com/512/5449/5449048.png",
         },

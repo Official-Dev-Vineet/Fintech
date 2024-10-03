@@ -2,28 +2,30 @@ import OurMission from "../decorators/OurMission";
 import OurPartners from "../decorators/OurPartners";
 import OurServices from "../decorators/OurServices";
 import Slider from "../decorators/Slider";
+import { useDocumentTitle } from "../helper/Hooks";
 
 const Home = () => {
+  useDocumentTitle("Home || Chagans Business Center");
   const sliderItems = [
     {
       image:
-        "https://blog.m2pfintech.com/wp-content/uploads/2022/07/Creative-AePS-Blog-03.jpg",
+        "https://globalfintechseries.com/wp-content/uploads/Google-Pay-India-signs-MoU-with-NPCI-International-for-Global-Expansion-of-UPI.webp",
       title: "Aadhaar Banking (AEPS)",
       description: "Banking Services made easy – anytime, anywhere",
       path: "/about-us",
       pathname: "Know more",
     },
     {
-      image:
-        "https://img.freepik.com/free-photo/person-paying-with-its-credit-card_23-2149167302.jpg?t=st=1727684432~exp=1727688032~hmac=ecfc4f7d2d49a55458a0ff727642ac444a06fd82762ffab92905203086116945&w=1060",
+      image: "http://b2c.cscbls.com/images/slider/ss.png",
       title: "MICRO ATMs",
       description: "Banking Services made easy – anytime, anywhere",
       path: "/about-us",
       pathname: "Know more",
     },
+
     {
       image:
-        "https://img.freepik.com/free-photo/financial-income-economic-diagram-money-concept_53876-121065.jpg?t=st=1727684385~exp=1727687985~hmac=66d0fc031a69deb2804d2bd235ea23132ee7ded5863b9e89742a6c75526e6f71&w=1060",
+        "https://www.sonvarsa.com/galleryimg/9477357cash1-management-software-in-ahmedabad.png",
       title: "Cash Management Services (CMS)",
       description: "Cash Management Services made simple and easy",
       path: "/about-us",
@@ -46,7 +48,7 @@ const Home = () => {
     },
     {
       image:
-        "https://blogassets.airtel.in/wp-content/uploads/2022/01/What-are-the-types-of-Utility-Bill.jpg",
+        "https://cdn.pixabay.com/photo/2021/03/19/13/15/bill-6107551_640.png",
       title: "Pay Bills",
       description: "Pay Bills Services made easy – anytime, anywhere",
       path: "/about-us",

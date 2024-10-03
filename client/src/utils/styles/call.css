@@ -1,0 +1,35 @@
+.Call {
+  position: fixed;
+  right: 2rem;
+  bottom: 5rem;
+  display: grid;
+  place-items: center;
+  padding: 0.5rem;
+  background-color: #fff;
+  z-index: 998;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  gap: 0.5rem;
+}
+.Call:hover{
+  background-color: var(--primaryColor);
+  color: #fff;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+}
+.Call svg {
+  fill: var(--primaryColor);
+  cursor: pointer;
+  font-size: 2rem;
+}

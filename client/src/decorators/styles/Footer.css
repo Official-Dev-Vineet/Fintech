@@ -1,20 +1,36 @@
 footer {
   padding: 1rem;
+  padding-top: 10rem;
   text-align: center;
   box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.215);
-  background-color: #fff;
+  background-color: #222;
 }
+footer .infoGroup {
+  width: 100%;
+  box-shadow: 0 -2px 0 rgba(100, 100, 100, 0.2);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 0;
+  color: #ccc;
+}
+
 footer .footerContainer {
   display: grid;
   place-items: center;
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 1fr;
 }
 footer .footerContainer .footerLinks {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  justify-items: center;
   text-align: left;
+  margin-bottom: 2rem;
 }
 footer .footerContainer .footerLinks ul {
   display: flex;
@@ -30,11 +46,61 @@ footer .footerContainer .footerLinks h3 {
 footer .footerContainer .footerLinks ul li a {
   transition: all 0.3s ease;
   font-size: 0.8em;
+  color: #ccc;
+  position: relative;
+}
+footer .footerContainer .footerLinks ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--primaryColor);
+  transition: all 0.3s ease;
+}
+footer .footerContainer .footerLinks ul li a:hover::after {
+  width: 100%;
+}
+footer .footerContainer .footerLinks ul li a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #fff;
+  left: -15px;
 }
 footer .footerContainer .footerLinks ul li a:hover {
   color: var(--primaryColor);
 }
-
+footer .copyright {
+  box-shadow: 0 -2px 0 rgba(100, 100, 100, 0.2);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: #ccc;
+}
+footer .copyright h3 {
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  background-image: linear-gradient(
+    to right,
+    var(--primaryColor),
+    #c1c1c1,
+    rgb(248, 240, 10)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+footer .copyright p {
+  font-size: 0.8em;
+}
 @media screen and (max-width: 768px) {
   footer .footerContainer {
     grid-template-columns: 1fr;

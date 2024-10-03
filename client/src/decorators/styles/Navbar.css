@@ -85,10 +85,10 @@ nav .bar {
   nav .menuLinks {
     position: absolute;
     top: calc(-100vh + 1rem);
-    right: 0;
+    right: -1rem;
     width: 200px;
-    z-index: 99;
-    height: calc(100vh - 100px);
+    z-index: 99999;
+    height: calc(100vh - 60px);
     flex-direction: column;
     background-color: #fff;
     padding: 0.5rem;

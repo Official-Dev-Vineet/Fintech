@@ -1,9 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../utils/logo";
 import "./styles/Navbar.css";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
 const Navbar = () => {
+  const navigate = useNavigate()
   const menuLinks = [
     {
       path: "/about-us",
@@ -31,7 +32,7 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <button>Login</button>
+          <button onClick={() => navigate("/login")}>Login</button>
         </div>
         <div className="bar" onClick={() => setActive(!active)}>
           <GiHamburgerMenu />
