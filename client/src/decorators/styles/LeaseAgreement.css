@@ -1,0 +1,27 @@
+.lease-agreement {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 20px;
+}
+
+.lease-agreement h1,
+.lease-agreement h2 {
+  text-align: center;
+}
+
+.lease-agreement p {
+  margin: 10px 0;
+}
+
+.lease-agreement ol {
+  margin-left: 20px;
+}
+
+.lease-agreement .signatures {
+  margin-top: 30px;
+  text-align: left;
+}
+.colorRed {
+  color: var(--primaryColor);
+  font-weight: 600;
+}
