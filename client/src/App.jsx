@@ -17,6 +17,7 @@ const Refund = lazy(() => import("./components/Refund"));
 const Contact = lazy(() => import("./components/ContactUs"));
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
+const Rental = lazy(() => import("./components/Rental"));
 
 const App = () => {
   const routes = createBrowserRouter(
@@ -31,7 +32,9 @@ const App = () => {
         <Route path="/legal/refund-policy" element={<Refund />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
+        <Route path="/rental-agreement" element={<Rental />} />
         <Route path="*" element={<>404 Not Found</>} />
       </Route>
     )

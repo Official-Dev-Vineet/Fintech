@@ -1,0 +1,44 @@
+.rental .max-width {
+  padding: 1rem;
+  perspective: 1000px;
+}
+
+.rental .max-width .form {
+  background-color: #fff;
+  max-width: 600px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 20px 30px 30px rgba(0, 0, 0, 0.1);
+  transform: rotateX(15deg);
+}
+
+.rental .max-width .form p {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.rental .form .btn {
+  max-width: 150px;
+  width: 100%;
+  display: block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.rental .form .input {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+.rental .form .input.active {
+  border: 1px solid var(--primaryColor);
+  background-color: var(--primaryColor);
+  color: #fff;
+}

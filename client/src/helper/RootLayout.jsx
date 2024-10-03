@@ -9,7 +9,9 @@ const RootLayout = () => {
   return (
     <>
       <Navbar />
+      
       <Outlet />
+
       <GetACall />
       <Footer />
       <Need />

@@ -20,13 +20,14 @@ footer .infoGroup {
 
 footer .footerContainer {
   display: grid;
+  width: 100%;
   place-items: center;
   grid-template-columns: 1fr;
 }
 footer .footerContainer .footerLinks {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   justify-items: center;
   text-align: left;
@@ -35,9 +36,11 @@ footer .footerContainer .footerLinks {
 footer .footerContainer .footerLinks ul {
   display: flex;
   flex-direction: column;
-  gap: 0;
   margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
 }
+
 footer .footerContainer .footerLinks h3 {
   font-size: clamp(1.5rem, 2vw, 1.8rem);
   color: var(--primaryColor);
@@ -45,7 +48,7 @@ footer .footerContainer .footerLinks h3 {
 
 footer .footerContainer .footerLinks ul li a {
   transition: all 0.3s ease;
-  font-size: 0.8em;
+  font-size: 1em;
   color: #ccc;
   position: relative;
 }

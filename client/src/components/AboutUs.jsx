@@ -17,9 +17,9 @@ const AboutUs = () => {
 
           <div className="textContainer">
             <h1>About Us</h1>
-            <h2>welcome to Chagans Technologies Ltd.</h2>
+            <h2>Welcome to Chagans Technologies Limited</h2>
             <p>
-              Welcome to Chagans Technologies Ltd. – your go-to platform for all
+              Welcome to Chagans Technologies Limited – your go-to platform for all
               utility services! At Chagans.in, we offer a one-stop digital
               solution for all your recharge and bill payment needs, serving
               happy customers across India. Our platform makes it easy to handle

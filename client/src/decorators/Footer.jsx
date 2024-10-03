@@ -1,5 +1,7 @@
+
 import { Link } from "react-router-dom";
 import "./styles/Footer.css";
+
 const Footer = () => {
   const footerLinks = [
     {
@@ -12,36 +14,6 @@ const Footer = () => {
         {
           name: "Contact Us",
           path: "/contact-us",
-        },
-        {
-          name: "Call Us",
-          path: "tel:+91 9876543210",
-        },
-        { name: "info@chagans.com", path: "mailto:info@chagans.com" },
-      ],
-    },
-    {
-      title: "Services",
-      list: [
-        {
-          name: "Digital Payments",
-          path: "/services/digital-payments",
-        },
-        {
-          name: "Payout Solutions",
-          path: "/services/payout-solutions",
-        },
-        {
-          name: "Banking Solutions",
-          path: "/services/banking-solutions",
-        },
-        {
-          name: "Rental Agreements",
-          path: "/services/rental-agreements",
-        },
-        {
-          name: "Legal Documents",
-          path: "/services/legal-documents",
         },
       ],
     },
@@ -67,14 +39,15 @@ const Footer = () => {
       ],
     },
   ];
+
   const personalInfo = [
     {
       name: "Address",
-      value: `Chagans Technologies Ltd.
-              Business Centre, SCO-4, Dayal Bagh Market,
+      value: `Chagans Technologies Limited, SCO-4, Dayal Bagh Market,
               Sector-39, Surajkund, Faridabad - 121009 Haryana`,
     },
   ];
+
   return (
     <footer>
       <div className="footerContainer max-width">
@@ -97,8 +70,8 @@ const Footer = () => {
           <p>{personalInfo[0].value}</p>
         </div>
         <div className="copyright">
-          <h3>Chagans Technologies Ltd.</h3>
-          <p>&copy; 2024 Chagans Technologies Ltd. All Rights Reserved.</p>
+          <h3>Chagans Technologies Limited</h3>
+          <p>&copy; 2024 Chagans Technologies Limited All Rights Reserved.</p>
         </div>
       </div>
     </footer>
