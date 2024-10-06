@@ -5,52 +5,72 @@ const LeaseAgreement = ({ data }) => {
   const month = new Date().toLocaleString("default", { month: "long" });
 
   function addMonthsAndFormatDate(dateString, monthsToAdd) {
-    // Parse the input date string
-    const dateParts = dateString.split(" ");
-    const day = parseInt(dateParts[0]);
-    const month = dateParts[2];
-    const year = parseInt(dateParts[4]);
+    const date = new Date(dateString);
+    date.setMonth(date.getMonth + monthsToAdd);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
 
-    // Create a date object
-    const date = new Date(`${month} ${day}, ${year}`);
+    // Function to add ordinal suffix
+    const getOrdinal = (day) => {
+      if (day > 3 && day < 21) return "th"; // Covers 11th - 13th
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
 
-    // Add the specified number of months
-    date.setMonth(date.getMonth() + monthsToAdd);
+    return `${day}${getOrdinal(day)} day of ${month}, ${year}`;
+  }
 
-    // Define options for formatting the date
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    const formattedDate = date.toLocaleDateString("en-US", options);
+  function formatDate(dateStr) {
+    const date = new Date(dateStr);
 
-    // Get the day of the month with suffix
-    const dayWithSuffix =
-      day +
-      (day % 10 === 1 && day % 100 !== 11
-        ? "st"
-        : day % 10 === 2 && day % 100 !== 12
-        ? "nd"
-        : day % 10 === 3 && day % 100 !== 13
-        ? "rd"
-        : "th");
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
 
-    // Return the formatted date
-    return `${dayWithSuffix} day of ${formattedDate}`;
+    // Function to add ordinal suffix
+    const getOrdinal = (day) => {
+      if (day > 3 && day < 21) return "th"; // Covers 11th - 13th
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    return `${day}${getOrdinal(day)} day of ${month}, ${year}`;
   }
 
   return (
     <div className="lease-agreement">
       <h1>Lease Agreement</h1>
       <p>
-        THIS LEASE AGREEMENT is made at Faridabad, Haryana on this{" "}
-        <span className="colorRed">
+        THIS LEASE AGREEMENT is made at Faridabad, Haryana on{" "}
+        <span className="colorRed" style={{ textDecoration: "underline" }}>
           {" "}
           {new Date().getDate()}
-          {new Date().getDate() == 1
-            ? "st"
-            : new Date().getDate() == 2
-            ? "nd"
-            : new Date().getDate() == 3
-            ? "rd"
-            : "th"}{" "}
+          <sup style={{ textTransform: "lowercase" }}>
+            {new Date().getDate() == 1
+              ? "st"
+              : new Date().getDate() == 2
+              ? "nd"
+              : new Date().getDate() == 3
+              ? "rd"
+              : "th"}
+          </sup>{" "}
           day of {month}, {new Date().getFullYear()}
         </span>
         .
@@ -59,37 +79,92 @@ const LeaseAgreement = ({ data }) => {
       <h2>Between</h2>
       <p>
         <span className="colorRed">
-          {data?.name ?? "Unknown"} ({data?.idType ?? "Unknown"} No.{" "}
-          {data?.idNumber})
-        </span>{" "}
-        son of <span className="colorRed">{data?.fName ?? "Unknown"}</span>{" "}
-        resident of &nbsp;
-        <span className="colorRed">{data?.address ?? "Unknown"}</span>{" "}
+          {data?.landlords?.map((landlord, index) => {
+            if (index === data?.landlords.length - 1) {
+              return (
+                landlord.name +
+                " (" +
+                landlord.idType +
+                " " +
+                landlord.idNumber +
+                ") " +
+                landlord.titleParent +
+                " " +
+                landlord.fName +
+                " resident of " +
+                landlord.address +
+                " "
+              );
+            } else {
+              return (
+                landlord.name +
+                " (" +
+                landlord.idType +
+                " " +
+                landlord.idNumber +
+                ") " +
+                landlord.titleParent +
+                " " +
+                landlord.fName +
+                " resident of " +
+                landlord.address +
+                " and "
+              );
+            }
+          })}
+        </span>
         hereinafter called the ‘LESSOR’ (which expression shall unless excluded
         by or repugnant to the context, includes his heirs, successors, legal
         representatives, executors, administrators and assigns) of the one part.
       </p>
-      <p>AND</p>
+      <h2>And</h2>
       <p>
         <span className="colorRed">
-          {" "}
-          {data?.nameOpponent} ({data?.idTypeOpposite} No.{" "}
-          {data?.idNumberOpposite?.toLocaleUpperCase("en") ?? "Unknown"})
-        </span>{" "}
-        son of <span className="colorRed">{data?.fNameOpp ?? "Unknown"}</span>{" "}
-        resident of{" "}
-        <span className="colorRed">{data?.addressOpponent ?? "Unknown"}</span>,
-        hereinafter called the ‘LESSEE’ (which expression shall unless repugnant
-        to the context or meaning thereof the other part, include his heirs,
-        successors, legal representatives, executors, administrators and
+          {data?.tenants?.map((landlord, index) => {
+            if (index === data?.landlords.length - 1) {
+              return (
+                landlord.name +
+                " (" +
+                landlord.idType +
+                " " +
+                landlord.idNumber +
+                ") " +
+                landlord.titleParent +
+                " " +
+                landlord.fName +
+                " resident of " +
+                landlord.address +
+                " "
+              );
+            } else {
+              return (
+                landlord.name +
+                " (" +
+                landlord.idType +
+                " " +
+                landlord.idNumber +
+                ") " +
+                landlord.titleParent +
+                " " +
+                landlord.fName +
+                " resident of " +
+                landlord.address +
+                " and "
+              );
+            }
+          })}
+        </span>
+        , hereinafter called the ‘LESSEE’ (which expression shall unless
+        repugnant to the context or meaning thereof the other part, include his
+        heirs, successors, legal representatives, executors, administrators and
         assigns) on the other part.
       </p>
-
-      <h2>Whereas</h2>
+      <br />
       <p>
-        The LESSOR is the absolute owner of the{" "}
+        Whereas The LESSOR is the absolute owner of the{" "}
         <span className="colorRed">
-          {data?.propertyName + " " + data?.propertyAddress}
+          {data?.propertyName ?? "********"}{" "}
+          {data?.propertyAddress ?? "********"}
         </span>
         , (hereinafter called the “Premises’’) and whereas LESSOR has agreed to
         grant to the lessee on lease the demised premises consisting of Two
@@ -116,34 +191,15 @@ const LeaseAgreement = ({ data }) => {
           property by the Lessee.
         </li>
         <li>
-          The Lessee is granted for a period of 11 months only, commencing from
-          &nbsp;
+          The Lessee is granted for a period of {data?.numberOfMonth ?? "**"}{" "}
+          months only, commencing from &nbsp;
           <span className="colorRed">
-            {new Date().getDate()}
-            {new Date().getDate() == 1
-              ? "st"
-              : new Date().getDate() == 2
-              ? "nd"
-              : new Date().getDate() == 3
-              ? "rd"
-              : "th"}{" "}
-            day of {new Date().toLocaleString("default", { month: "long" })},{" "}
-            {new Date().getFullYear()}{" "}
+            {data?.startLeaseDate && formatDate(data?.startLeaseDate)}
           </span>
           to{" "}
           {addMonthsAndFormatDate(
-            `${new Date().getDate()}${
-              new Date().getDate() == 1
-                ? "st"
-                : new Date().getDate() == 2
-                ? "nd"
-                : new Date().getDate() == 3
-                ? "rd"
-                : "th"
-            }{" "}day of ${new Date().toLocaleString("default", {
-              month: "long",
-            })},{" "} ${new Date().getFullYear()}`,
-            11
+            data?.startLeaseDate,
+            parseInt(data?.numberOfMonth)
           )}
           . The Lessee must inform the Lessor in writing of his desire to seek a
           renewal of the Lease agreement at least one month prior to the expiry
@@ -157,13 +213,18 @@ const LeaseAgreement = ({ data }) => {
           circumstances.
         </li>
         <li>
-          The Lessee shall use the said leased premises only for residential
+          The Lessee shall use the said leased premises only for{" "}
+          <span className="colorRed">
+            {" "}
+            {data?.propertyType ?? "*********"}{" "}
+          </span>
           purposes and no part of the premises will be used for any other
           purpose.
         </li>
         <li>
-          The Lessee shall not carry any trade, occupation, business, or
-          profession in the said premises.
+          The Lessee shall {data?.propertyType === "Residential" ? "not" : " "}{" "}
+          carry any trade, occupation, business, or profession in the said
+          premises.
         </li>
         <li>
           The Lessee shall not make any additions or alterations in the leased

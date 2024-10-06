@@ -1,6 +1,5 @@
 .rental .max-width {
   padding: 1rem;
-  perspective: 1000px;
 }
 
 .rental .max-width .form {
@@ -17,6 +16,13 @@
   display: grid;
   grid-template-columns: 1.2fr 2fr;
   width: 100%;
+}
+.rental .inputGroup{
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
 }
 .rental .preview {
   width: 100%;
@@ -48,6 +54,22 @@
   color: #fff;
 }
 
+.rental select {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  border-radius: 10px;
+  outline: none;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+}
+
+.rental select option:hover {
+  background-color: var(--primaryColor);
+  color: #fff;
+}
 .rental .input {
   width: 100%;
   margin-bottom: 1rem;
