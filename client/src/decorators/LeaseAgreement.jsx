@@ -4,28 +4,23 @@ import "./styles/LeaseAgreement.css";
 const LeaseAgreement = ({ data }) => {
   const month = new Date().toLocaleString("default", { month: "long" });
 
+  function getOrdinal(n) {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return s[(v - 20) % 10] || s[v] || s[0];
+  }
+
   function addMonthsAndFormatDate(dateString, monthsToAdd) {
     const date = new Date(dateString);
-    date.setMonth(date.getMonth + monthsToAdd);
+
+    // Correct method call for adding months
+    date.setMonth(date.getMonth() + monthsToAdd);
+
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
 
-    // Function to add ordinal suffix
-    const getOrdinal = (day) => {
-      if (day > 3 && day < 21) return "th"; // Covers 11th - 13th
-      switch (day % 10) {
-        case 1:
-          return "st";
-        case 2:
-          return "nd";
-        case 3:
-          return "rd";
-        default:
-          return "th";
-      }
-    };
-
+    // Return formatted string with ordinal suffix
     return `${day}${getOrdinal(day)} day of ${month}, ${year}`;
   }
 
@@ -80,34 +75,40 @@ const LeaseAgreement = ({ data }) => {
       <p>
         <span className="colorRed">
           {data?.landlords?.map((landlord, index) => {
-            if (index === data?.landlords.length - 1) {
+            if (index === data?.landlords?.length - 1) {
               return (
-                landlord.name +
+                landlord?.title +
+                " " +
+                landlord?.name +
                 " (" +
-                landlord.idType +
+                landlord?.idType +
                 " " +
-                landlord.idNumber +
+                landlord?.idNumber +
+                " contact number-  " +
+                landlord?.contact +
                 ") " +
-                landlord.titleParent +
-                " " +
-                landlord.fName +
+                (landlord?.category != "individual"
+                  ? ""
+                  : landlord.titleParent + " " + landlord.fName) +
                 " resident of " +
-                landlord.address +
+                landlord?.address +
                 " "
               );
             } else {
               return (
-                landlord.name +
+                landlord?.title +
+                " " +
+                landlord?.name +
                 " (" +
-                landlord.idType +
+                landlord?.idType +
                 " " +
-                landlord.idNumber +
+                landlord?.idNumber +
                 ") " +
-                landlord.titleParent +
-                " " +
-                landlord.fName +
+                (landlord?.category != "individual"
+                  ? ""
+                  : landlord?.titleParent + " " + landlord?.fName) +
                 " resident of " +
-                landlord.address +
+                landlord?.address +
                 " and "
               );
             }
@@ -123,32 +124,36 @@ const LeaseAgreement = ({ data }) => {
           {data?.tenants?.map((landlord, index) => {
             if (index === data?.landlords.length - 1) {
               return (
-                landlord.name +
+                landlord?.name +
                 " (" +
-                landlord.idType +
+                landlord?.idType +
                 " " +
                 landlord.idNumber +
+                " contact number-  " +
+                landlord?.contact +
                 ") " +
-                landlord.titleParent +
-                " " +
-                landlord.fName +
+                (landlord?.category != "individual"
+                  ? ""
+                  : landlord?.titleParent + " " + landlord?.fName) +
                 " resident of " +
-                landlord.address +
+                landlord?.address +
                 " "
               );
             } else {
               return (
-                landlord.name +
+                landlord?.name +
                 " (" +
-                landlord.idType +
+                landlord?.idType +
                 " " +
-                landlord.idNumber +
+                landlord?.idNumber +
+                " contact number-  " +
+                landlord?.contact +
                 ") " +
-                landlord.titleParent +
-                " " +
-                landlord.fName +
+                (landlord?.category != "individual"
+                  ? ""
+                  : landlord?.titleParent + " " + landlord?.fName) +
                 " resident of " +
-                landlord.address +
+                landlord?.address +
                 " and "
               );
             }
@@ -176,16 +181,19 @@ const LeaseAgreement = ({ data }) => {
       <ol>
         <li>
           The Lessee shall pay a sum of Rs.{" "}
-          <span className="colorRed">{data?.propertyPrice}</span>/- per month as
-          a rent in advance on or before the 20th day of each English Calendar
-          month.
+          <span className="colorRed">{data?.propertyPrice ?? "******"}</span>/-
+          per month as a rent in advance on or before the{" "}
+          <span className="colorRed">
+            {getOrdinal(data?.rentPayDate) ?? "***"}
+          </span>{" "}
+          day of each English Calendar month.
         </li>
         <li>
           The Lessee has paid to the Lessor a sum of Rs.{" "}
-          <span className="colorRed">{data?.propertyPrice}</span>/- as an
-          interest Free Security deposit which will be refundable back to the
-          Lessee, on expiry/Termination of the Lease agreement and at the time
-          of handling over the physical vacant possession of the above said
+          <span className="colorRed">{data?.securityPrice ?? "******"}</span>/-
+          as an interest Free Security deposit which will be refundable back to
+          the Lessee, on expiry/Termination of the Lease agreement and at the
+          time of handling over the physical vacant possession of the above said
           tenanted leased premises to the Lessor after deducting all expenses
           towards outstanding bills, major damages wear and tear, if any of the
           property by the Lessee.
@@ -312,6 +320,9 @@ const LeaseAgreement = ({ data }) => {
           will be handed over to the concerned court of law of
           Gurgaon/Faridabad.
         </li>
+        {data?.terms?.map((term, index) => (
+          <li key={index}>{term}</li>
+        ))}
       </ol>
 
       <h2>Signatures</h2>

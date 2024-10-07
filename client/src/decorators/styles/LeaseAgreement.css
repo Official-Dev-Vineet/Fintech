@@ -18,8 +18,11 @@
 
 .lease-agreement ol {
   margin-left: 20px;
+  list-style-type: decimal;
 }
-
+.lease-agreement ol li{
+  list-style-type: decimal;
+}
 .lease-agreement .signatures {
   margin-top: 30px;
   text-align: left;
