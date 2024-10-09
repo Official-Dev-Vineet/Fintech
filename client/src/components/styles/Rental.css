@@ -9,8 +9,8 @@
   margin: 2rem auto;
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: 20px 30px 30px rgba(0, 0, 0, 0.1);
-  transform: rotateX(15deg);
+  box-shadow: 20px 30px 30px rgba(0, 0, 0, 0.1),
+    -5px -3px 60px rgba(0, 0, 0, 0.1);
 }
 .rental .rentalWrapper {
   display: grid;
@@ -32,6 +32,8 @@
   border: 1px solid rgba(0, 0, 0, 0.3);
   scale: 0.9;
   border-radius: 5px;
+  position: sticky;
+  top: 50px;
 }
 .rental .max-width .form p {
   font-weight: 600;

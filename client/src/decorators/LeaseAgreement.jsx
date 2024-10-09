@@ -75,43 +75,37 @@ const LeaseAgreement = ({ data }) => {
       <p>
         <span className="colorRed">
           {data?.landlords?.map((landlord, index) => {
-            if (index === data?.landlords?.length - 1) {
-              return (
-                landlord?.title +
-                " " +
-                landlord?.name +
-                " (" +
-                landlord?.idType +
-                " " +
-                landlord?.idNumber +
-                " contact number-  " +
-                landlord?.contact +
-                ") " +
-                (landlord?.category != "individual"
-                  ? ""
-                  : landlord.titleParent + " " + landlord.fName) +
-                " resident of " +
-                landlord?.address +
-                " "
-              );
-            } else {
-              return (
-                landlord?.title +
-                " " +
-                landlord?.name +
-                " (" +
-                landlord?.idType +
-                " " +
-                landlord?.idNumber +
-                ") " +
-                (landlord?.category != "individual"
-                  ? ""
-                  : landlord?.titleParent + " " + landlord?.fName) +
-                " resident of " +
-                landlord?.address +
-                " and "
-              );
-            }
+            const {
+              firmTitle,
+              firmName,
+              firmOwnerTitle,
+              title,
+              name,
+              idType,
+              idNumber,
+              contact,
+              titleParent,
+              category,
+              fName,
+              address,
+              district,
+              state,
+              pincode,
+            } = landlord;
+
+            const landlordInfo =
+              category !== "individual"
+                ? `${firmTitle} ${firmName}, ${address}, ${district}, ${state}, ${pincode} through its ${firmOwnerTitle} ${title} ${name} (${idType} ${idNumber}${
+                    contact ? ` contact number: ${contact}` : ""
+                  }) ${`${titleParent} ${fName}`} `
+                : `${title} ${name} (${idType} ${idNumber}${
+                    contact ? ` contact number: ${contact}` : ""
+                  }) ${`${titleParent} ${fName}`} resident of ${address}, ${district}, ${state}, ${pincode} `;
+
+            return (
+              landlordInfo +
+              (index === data?.landlords?.length - 1 ? "" : " and ")
+            );
           })}
         </span>
         hereinafter called the ‘LESSOR’ (which expression shall unless excluded
@@ -122,41 +116,37 @@ const LeaseAgreement = ({ data }) => {
       <p>
         <span className="colorRed">
           {data?.tenants?.map((landlord, index) => {
-            if (index === data?.landlords.length - 1) {
-              return (
-                landlord?.name +
-                " (" +
-                landlord?.idType +
-                " " +
-                landlord.idNumber +
-                " contact number-  " +
-                landlord?.contact +
-                ") " +
-                (landlord?.category != "individual"
-                  ? ""
-                  : landlord?.titleParent + " " + landlord?.fName) +
-                " resident of " +
-                landlord?.address +
-                " "
-              );
-            } else {
-              return (
-                landlord?.name +
-                " (" +
-                landlord?.idType +
-                " " +
-                landlord?.idNumber +
-                " contact number-  " +
-                landlord?.contact +
-                ") " +
-                (landlord?.category != "individual"
-                  ? ""
-                  : landlord?.titleParent + " " + landlord?.fName) +
-                " resident of " +
-                landlord?.address +
-                " and "
-              );
-            }
+            const {
+              firmTitle,
+              firmName,
+              firmOwnerTitle,
+              title,
+              name,
+              idType,
+              idNumber,
+              contact,
+              titleParent,
+              category,
+              fName,
+              address,
+              district,
+              state,
+              pincode,
+            } = landlord;
+
+            const landlordInfo =
+              category !== "individual"
+                ? `${firmTitle} ${firmName}, ${address}, ${district}, ${state}, ${pincode} through its ${firmOwnerTitle} ${title} ${name} (${idType} ${idNumber}${
+                    contact ? ` contact number: ${contact}` : ""
+                  }) ${`${titleParent} ${fName}`} `
+                : `${title} ${name} (${idType} ${idNumber}${
+                    contact ? ` contact number: ${contact}` : ""
+                  }) ${`${titleParent} ${fName}`} resident of ${address}, ${district}, ${state}, ${pincode} `;
+
+            return (
+              landlordInfo +
+              (index === data?.landlords?.length - 1 ? "" : " and ")
+            );
           })}
         </span>
         , hereinafter called the ‘LESSEE’ (which expression shall unless
@@ -166,15 +156,33 @@ const LeaseAgreement = ({ data }) => {
       </p>
       <br />
       <p>
-        Whereas The LESSOR is the absolute owner of the{" "}
+        Whereas, the LESSOR is the absolute owner of the{" "}
         <span className="colorRed">
           {data?.propertyName ?? "********"}{" "}
-          {data?.propertyAddress ?? "********"}
+          {data.propertyName === "flat" && (
+            <>
+              {`${data?.flatType} floor no: ${data?.floorNo} `}
+              {data?.parking
+                ? "and parking available"
+                : "and no parking available"}{" "}
+              {data?.terrace
+                ? "and terraces available"
+                : "and no terraces available"}{" "}
+            </>
+          )}
+          {data.propertyCategory === "commercial" &&
+            data.propertyName !== "factory" && (
+              <>{data?.shopArea ?? "********"} </>
+            )}
+          {`${data?.propertyAddress ?? "********"} ${
+            data?.propertyDisctrict ?? "********"
+          } ${data?.propertyState ?? "********"} ${
+            data?.propertyPincode ?? "********"
+          }`}
         </span>
-        , (hereinafter called the “Premises’’) and whereas LESSOR has agreed to
-        grant to the lessee on lease the demised premises consisting of Two
-        Bedrooms, One Drawing cum Dining, Two Toilets and One Kitchen on the
-        following terms and conditions as mentioned hereinafter:
+        , (hereinafter called the &quot;Premises&quot;) and whereas LESSOR has
+        agreed to grant to the lessee on lease the demised premises on following
+        terms and conditions as mentioned hereinafter:
       </p>
 
       <h2>Terms and Conditions</h2>
@@ -184,7 +192,10 @@ const LeaseAgreement = ({ data }) => {
           <span className="colorRed">{data?.propertyPrice ?? "******"}</span>/-
           per month as a rent in advance on or before the{" "}
           <span className="colorRed">
-            {getOrdinal(data?.rentPayDate) ?? "***"}
+            {data?.rentPayDate}{" "}
+            <sup style={{ textTransform: "lowercase" }}>
+              {getOrdinal(data?.rentPayDate)}
+            </sup>
           </span>{" "}
           day of each English Calendar month.
         </li>
@@ -199,21 +210,36 @@ const LeaseAgreement = ({ data }) => {
           property by the Lessee.
         </li>
         <li>
-          The Lessee is granted for a period of {data?.numberOfMonth ?? "**"}{" "}
-          months only, commencing from &nbsp;
+          The Lessee is granted for a period of{" "}
           <span className="colorRed">
-            {data?.startLeaseDate && formatDate(data?.startLeaseDate)}
+            {data?.numberOfMonth ?? "**"} months only
+          </span>{" "}
+          , commencing from &nbsp;
+          <span className="colorRed">
+            {data?.startLeaseDate && formatDate(data?.startLeaseDate)} to{" "}
+            {addMonthsAndFormatDate(
+              data?.startLeaseDate,
+              parseInt(data?.numberOfMonth)
+            )}
           </span>
-          to{" "}
-          {addMonthsAndFormatDate(
-            data?.startLeaseDate,
-            parseInt(data?.numberOfMonth)
-          )}
           . The Lessee must inform the Lessor in writing of his desire to seek a
           renewal of the Lease agreement at least one month prior to the expiry
           of the Lease. Any extension will become operative only when there is a
           written agreement incorporating the agreed terms between the Lessee
           and the Lessor.
+        </li>
+        <li>
+          Both the Lessor and Lessee agree that there shall be a lock-in period
+          of
+          <span className="colorRed">
+            {" "}
+            {data?.lockInPeriod ?? "**"} months{" "}
+          </span>
+          from the commencement of this lease agreement. Neither party can
+          terminate the lease during this lock-in period except under
+          exceptional circumstances, such as material breach of contract. If the
+          Lessee chooses to terminate the lease during this period, they will be
+          liable to pay rent for the remaining months of the lock-in period.
         </li>
         <li>
           The Lessee shall not assign or sublet or part with the whole or any
@@ -230,7 +256,7 @@ const LeaseAgreement = ({ data }) => {
           purpose.
         </li>
         <li>
-          The Lessee shall {data?.propertyType === "Residential" ? "not" : " "}{" "}
+          The Lessee shall {data?.propertyType === "Residential" ? " " : "not"}{" "}
           carry any trade, occupation, business, or profession in the said
           premises.
         </li>
@@ -270,11 +296,28 @@ const LeaseAgreement = ({ data }) => {
           premises.
         </li>
         <li>
-          The Lessee shall pay electricity charges on the basis of the actual
-          consumption as per the meter reading for both the regular supply from
-          the state electricity board and backup connection from the space group
-          as per the bill raised by the appropriate authority and comply with
-          the payment norms in existence.
+          The Lessee shall pay electricity charges{" "}
+          {!data?.eSociety && (
+            <>
+              {data?.electricityBill}{" "}
+              {data.eUnit ? "Per Unit" : data.eFix ? "Rs." : ""}
+            </>
+          )}{" "}
+          on the basis of the actual consumption as per the meter reading for
+          both the regular supply from the state electricity board and backup
+          connection from the space group as per the bill raised by the
+          appropriate authority and comply with the payment norms in existence.
+          In addition, if applicable, the Lessee shall also be responsible for
+          payment of water bills{" "}
+          {!data?.wSociety && (
+            <>
+              {data?.waterBill}{" "}
+              {data.wUnit ? "Per Unit" : data.wFix ? "Rs." : ""}
+            </>
+          )}{" "}
+          and society maintenance charges (
+          {data?.societyMaintenance ? data?.societyMaintenance + "Rs." : ""}) as
+          per the terms established by the appropriate authority.
         </li>
         <li>
           The Lessee shall pay directly for cable connection charges every month
@@ -287,8 +330,9 @@ const LeaseAgreement = ({ data }) => {
         </li>
         <li>
           This lease can be extended for another period of eleven months with
-          the mutual consent of both parties after increasing @10% in the lease
-          rent.
+          the mutual consent of both parties after increasing @
+          <span className="colorRed">{data?.rentextextendRate ?? "**"}%</span>{" "}
+          in the lease rent.
         </li>
         <li>
           If the Lessee fails to pay the monthly rent to the Lessor as agreed
@@ -315,22 +359,26 @@ const LeaseAgreement = ({ data }) => {
           Lessor will be entitled to evict the Lessee from the demised premises
           without any prior notice.
         </li>
-        <li>
-          In any dispute that may arise between both parties, the dispute/case
-          will be handed over to the concerned court of law of
-          Gurgaon/Faridabad.
-        </li>
         {data?.terms?.map((term, index) => (
           <li key={index}>{term}</li>
         ))}
+        <li>
+          <strong>
+            In any dispute that may arise between both parties, the dispute/case
+            will be handed over to the concerned court of law of
+            Haryana(Faridabad).
+          </strong>
+        </li>
       </ol>
 
       <h2>Signatures</h2>
       <div className="signatures">
-        <p>
-          LESSOR: ________________________ <br />
-          LESSEE: ________________________
-        </p>
+        {data?.landlords?.map((_, index) => (
+          <p key={index}>LESSOR: ________________________</p>
+        ))}
+        {data?.tenants?.map((_, index) => (
+          <p key={index}>LESSEE: ________________________</p>
+        ))}
         <p>
           Witness 1: ________________________ <br />
           Witness 2: ________________________

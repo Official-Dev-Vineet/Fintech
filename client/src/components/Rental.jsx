@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useLayoutEffect, useMemo } from "react";
 import "./styles/Rental.css";
 import LeaseAgreement from "../decorators/LeaseAgreement";
 
@@ -188,11 +188,22 @@ const Rental = () => {
 
   const validateProperty = () => {
     if (data.propertyPrice && data.propertyAddress && data.propertyName) {
+      alert(
+        "After you have completed the payment, you can edit the details and submit to continue"
+      );
       setStep(8);
+      console.log(data);
     } else {
       alert("Please select a property");
     }
   };
+  const LeasePage = useMemo(() => {
+    return (
+      <div className={`preview ${isShowing ? "active" : ""}`}>
+        <LeaseAgreement data={data} />
+      </div>
+    );
+  }, [data, isShowing]);
   return (
     <main className="rental">
       <div className="max-width">
@@ -299,7 +310,7 @@ const Rental = () => {
                     className={`input ${
                       data.delivery === "softcopy" && "active"
                     }`}
-                    value="Soft Copy (RS-0)"
+                    value="Soft Copy (Rs. 250)"
                     onClick={() =>
                       setData((pre) => ({
                         ...pre,
@@ -312,7 +323,7 @@ const Rental = () => {
                     className={`input ${
                       data.delivery === "pickup" && "active"
                     }`}
-                    value="Pickup From Counter (RS-0)"
+                    value="Pickup From Counter (Rs. 250)"
                     onClick={() =>
                       setData((pre) => ({
                         ...pre,
@@ -325,7 +336,7 @@ const Rental = () => {
                     className={`input ${
                       data.delivery === "homedelivery" && "active"
                     }`}
-                    value="Home Delivery (Charge Applicable)"
+                    value="Home Delivery   (Rs. 250 + Delivery Charge)"
                     onClick={() =>
                       setData((pre) => ({
                         ...pre,
@@ -357,7 +368,7 @@ const Rental = () => {
                       </label>
                       <select
                         id={`category-${index}`}
-                        value={landlord.category}
+                        value={landlord?.category}
                         onChange={(e) =>
                           handleInputChange1(index, "category", e.target.value)
                         }
@@ -387,126 +398,157 @@ const Rental = () => {
                         </option>
                       </select>
                     </div>
-
-                    <div className="inputGroup">
-                      {landlord.category === "individual" && (
+                    {landlord.category !== "individual" &&
+                      landlord.category !== "" && (
                         <>
-                          <select
-                            value={landlord.title}
-                            onChange={(e) =>
-                              handleInputChange1(index, "title", e.target.value)
-                            }
-                          >
-                            <option value="" disabled>
-                              Select
-                            </option>
-                            <option value="Mr">Mr.</option>
-                            <option value="Ms">Miss</option>
-                            <option value="Mrs">Mrs.</option>
-                          </select>
-
-                          <input
-                            type="text"
-                            className="input"
-                            placeholder="Enter Name..."
-                            value={landlord.name}
-                            onChange={(e) =>
-                              handleInputChange1(index, "name", e.target.value)
-                            }
-                          />
-                        </>
-                      )}
-                      {landlord.category !== "individual" &&
-                        landlord.category !== "" && (
-                          <>
+                          <div className="inputField">
+                            <label>Firm details:</label>
+                            <div className="inputGroup">
+                              <select
+                                value={landlord?.firmTitle}
+                                onChange={(e) =>
+                                  handleInputChange1(
+                                    index,
+                                    "firmTitle",
+                                    e.target.value
+                                  )
+                                }
+                              >
+                                <option value="" disabled selected>
+                                  Select
+                                </option>
+                                <option value="M/s">M/s.</option>
+                              </select>
+                              <input
+                                type="text"
+                                className="input"
+                                placeholder="Enter details..."
+                                value={landlord.firmName}
+                                onChange={(e) =>
+                                  handleInputChange1(
+                                    index,
+                                    "firmName",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div className="inputField">
+                            <label htmlFor={`firmTitle-${index}`}>
+                              {" "}
+                              Through :{" "}
+                            </label>
                             <select
-                              value={landlord.title}
+                              id={`firmTitle-${index}`}
+                              value={landlord?.firmOwnerTitle}
                               onChange={(e) =>
                                 handleInputChange1(
                                   index,
-                                  "title",
+                                  "firmOwnerTitle",
                                   e.target.value
                                 )
                               }
                             >
-                              <option value="" disabled>
+                              <option value="" disabled selected>
                                 Select
                               </option>
-                              <option value="Authority Signatory">
-                                Authority Signatory
+                              <option value="Authorized Signatory">
+                                Authorized Signatory
                               </option>
                               <option value="Partner">Partner</option>
                               <option value="Director">Director</option>
                               <option value="Proprietor">Proprietor</option>
+                              <option value="President">President</option>
+                              <option value="Secretory">Secretory</option>
                             </select>
-                            <input
-                              type="text"
-                              className="input"
-                              placeholder="Enter Name..."
-                              value={landlord.name}
-                              onChange={(e) =>
-                                handleInputChange1(
-                                  index,
-                                  "name",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          </>
-                        )}
-                    </div>
-                    {landlord.category === "individual" &&
-                      landlord.title &&
-                      landlord.name && (
-                        <div className="inputField inputGroup">
-                          <select
-                            onChange={(e) =>
-                              handleInputChange1(
-                                index,
-                                "titleParent",
-                                e.target.value
-                              )
-                            }
-                          >
-                            <option value="" disabled selected>
-                              Select
-                            </option>
-                            {landlord.title === "Mr" && (
-                              <>
-                                {" "}
-                                <option value="Son Of">Son Of</option>
-                                <option value="Care Of">Care Of</option>
-                              </>
-                            )}
-
-                            {landlord.title === "Ms" && (
-                              <>
-                                {" "}
-                                <option value="Daughter Of">Daughter Of</option>
-                                <option value="Care Of">Care Of</option>
-                              </>
-                            )}
-                            {landlord.title === "Mrs" && (
-                              <>
-                                {" "}
-                                <option value="Wife Of">Wife Of</option>
-                                <option value="Care Of">Care Of</option>
-                              </>
-                            )}
-                          </select>
-                          <input
-                            type="text"
-                            className="input"
-                            placeholder="Enter Details"
-                            value={landlord.fName}
-                            onChange={(e) =>
-                              handleInputChange1(index, "fName", e.target.value)
-                            }
-                          />
-                        </div>
+                          </div>
+                        </>
                       )}
                     <div className="inputField">
-                      <label>Permanent Address:</label>
+                      <label htmlFor={`firmTitle-${index}`}> Title : </label>
+                      <div className="inputGroup">
+                        <select
+                          value={landlord?.title}
+                          onChange={(e) =>
+                            handleInputChange1(index, "title", e.target.value)
+                          }
+                        >
+                          <option value="" disabled>
+                            Select
+                          </option>
+                          <option value="Mr">Mr.</option>
+                          <option value="Ms">Miss</option>
+                          <option value="Mrs">Mrs.</option>
+                        </select>
+                        <input
+                          type="text"
+                          className="input"
+                          placeholder="Enter Name..."
+                          value={landlord.name}
+                          onChange={(e) =>
+                            handleInputChange1(index, "name", e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    {landlord.title && landlord.name && (
+                      <div className="inputField inputGroup">
+                        <select
+                          value={landlord.titleParent || ""}
+                          onChange={(e) =>
+                            handleInputChange1(
+                              index,
+                              "titleParent",
+                              e.target.value
+                            )
+                          }
+                        >
+                          <option value="" disabled selected>
+                            Select
+                          </option>
+                          {landlord.title === "Mr" && (
+                            <>
+                              {" "}
+                              <option value="Son Of">Son Of</option>
+                              <option value="Care Of">Care Of</option>
+                            </>
+                          )}
+
+                          {landlord.title === "Ms" && (
+                            <>
+                              {" "}
+                              <option value="Daughter Of">Daughter Of</option>
+                              <option value="Care Of">Care Of</option>
+                            </>
+                          )}
+                          {landlord.title === "Mrs" && (
+                            <>
+                              {" "}
+                              <option value="Wife Of">Wife Of</option>
+                              <option value="Care Of">Care Of</option>
+                            </>
+                          )}
+                        </select>
+                        <input
+                          type="text"
+                          className="input"
+                          placeholder="Enter Details"
+                          value={landlord.fName}
+                          onChange={(e) =>
+                            handleInputChange1(index, "fName", e.target.value)
+                          }
+                        />
+                      </div>
+                    )}
+                    <div className="inputField">
+                      <label>
+                        {landlord.category !== "individual"
+                          ? "Firm"
+                          : "Permanent"}{" "}
+                        Address:
+                      </label>
                       <input
                         type="text"
                         className="input"
@@ -519,6 +561,7 @@ const Rental = () => {
                     <div className="inputField">
                       <label htmlFor="state">State</label>
                       <select
+                        value={landlord.state || ""}
                         name="state"
                         id="state"
                         onChange={(e) =>
@@ -613,8 +656,8 @@ const Rental = () => {
                     <div className="inputField">
                       <label>ID Type:</label>
                       <select
+                        value={landlord.idType || ""}
                         className="input"
-                        value={landlord.idType}
                         onChange={(e) =>
                           handleInputChange1(index, "idType", e.target.value)
                         }
@@ -684,20 +727,21 @@ const Rental = () => {
             {step === 6 && (
               <div className="form">
                 <p>Enter Tenant&apos;s Details</p>
-                {data.tenants.map((tenant, index) => (
+                {data.tenants.map((landlord, index) => (
                   <div key={index}>
                     <div className="inputField">
-                      <label htmlFor={`tenant-category-${index}`}>
-                        Choose Category:
+                      <label htmlFor={`category-${index}`}>
+                        {" "}
+                        Choose Category:{" "}
                       </label>
                       <select
-                        id={`tenant-category-${index}`}
-                        value={tenant.category}
+                        id={`category-${index}`}
+                        value={landlord?.category}
                         onChange={(e) =>
                           handleInputChange2(index, "category", e.target.value)
                         }
                       >
-                        <option value="" disabled>
+                        <option value="" disabled selected>
                           Select
                         </option>
                         <option value="individual">Individual</option>
@@ -722,69 +766,99 @@ const Rental = () => {
                         </option>
                       </select>
                     </div>
-
-                    <div className="inputGroup">
-                      {tenant.category === "individual" && (
+                    {landlord.category !== "individual" &&
+                      landlord.category !== "" && (
                         <>
-                          <select
-                            value={tenant.title}
-                            onChange={(e) =>
-                              handleInputChange2(index, "title", e.target.value)
-                            }
-                          >
-                            <option value="" disabled>
-                              Select
-                            </option>
-                            <option value="Mr">Mr.</option>
-                            <option value="Ms">Miss</option>
-                            <option value="Mrs">Mrs.</option>
-                          </select>
-
-                          <input
-                            type="text"
-                            className="input"
-                            placeholder="Enter Name..."
-                            value={tenant.name}
-                            onChange={(e) =>
-                              handleInputChange2(index, "name", e.target.value)
-                            }
-                          />
+                          <div className="inputField inputGroup">
+                            <select
+                              value={landlord?.firmTitle}
+                              onChange={(e) =>
+                                handleInputChange2(
+                                  index,
+                                  "firmTitle",
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value="" disabled selected>
+                                Select
+                              </option>
+                              <option value="M/s">M/s.</option>
+                            </select>
+                            <input
+                              type="text"
+                              className="input"
+                              placeholder="Enter details..."
+                              value={landlord.firmName}
+                              onChange={(e) =>
+                                handleInputChange2(
+                                  index,
+                                  "firmName",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                          <div className="inputField">
+                            <label htmlFor={`firmTitle-${index}`}>
+                              {" "}
+                              Title:{" "}
+                            </label>
+                            <select
+                              id={`firmTitle-${index}`}
+                              value={landlord?.firmOwnerTitle}
+                              onChange={(e) =>
+                                handleInputChange2(
+                                  index,
+                                  "firmOwnerTitle",
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value="" disabled selected>
+                                Select
+                              </option>
+                              <option value="Authorized Signatory">
+                                Authorized Signatory
+                              </option>
+                              <option value="Partner">Partner</option>
+                              <option value="Director">Director</option>
+                              <option value="Proprietor">Proprietor</option>
+                              <option value="President">President</option>
+                              <option value="Secretory">Secretory</option>
+                            </select>
+                          </div>
                         </>
                       )}
-                      {tenant.category !== "individual" && tenant.category && (
-                        <>
-                          <select
-                            value={tenant.title}
-                            onChange={(e) =>
-                              handleInputChange2(index, "title", e.target.value)
-                            }
-                          >
-                            <option value="" disabled>
-                              Select
-                            </option>
-                            <option value="Authority Signatory">
-                              Authority Signatory
-                            </option>
-                            <option value="Partner">Partner</option>
-                            <option value="Director">Director</option>
-                            <option value="Proprietor">Proprietor</option>
-                          </select>
-                          <input
-                            type="text"
-                            className="input"
-                            placeholder="Enter Name..."
-                            value={tenant.name}
-                            onChange={(e) =>
-                              handleInputChange2(index, "name", e.target.value)
-                            }
-                          />
-                        </>
-                      )}
+                    <div className="inputField inputGroup">
+                      <select
+                        value={landlord?.title}
+                        onChange={(e) =>
+                          handleInputChange2(index, "title", e.target.value)
+                        }
+                      >
+                        <option value="" disabled>
+                          Select
+                        </option>
+                        <option value="Mr">Mr.</option>
+                        <option value="Ms">Miss</option>
+                        <option value="Mrs">Mrs.</option>
+                      </select>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="Enter Name..."
+                        value={landlord.name}
+                        onChange={(e) =>
+                          handleInputChange2(index, "name", e.target.value)
+                        }
+                      />
                     </div>
 
-                    {tenant.title && tenant.category === "individual" && (
+                    {landlord.title && landlord.name && (
                       <div className="inputField inputGroup">
                         <select
+                          value={landlord.titleParent || ""}
                           onChange={(e) =>
                             handleInputChange2(
                               index,
@@ -793,10 +867,10 @@ const Rental = () => {
                             )
                           }
                         >
-                          <option value="" disabled>
+                          <option value="" disabled selected>
                             Select
                           </option>
-                          {tenant.title === "Mr" && (
+                          {landlord.title === "Mr" && (
                             <>
                               {" "}
                               <option value="Son Of">Son Of</option>
@@ -804,14 +878,14 @@ const Rental = () => {
                             </>
                           )}
 
-                          {tenant.title === "Ms" && (
+                          {landlord.title === "Ms" && (
                             <>
                               {" "}
                               <option value="Daughter Of">Daughter Of</option>
                               <option value="Care Of">Care Of</option>
                             </>
                           )}
-                          {tenant.title === "Mrs" && (
+                          {landlord.title === "Mrs" && (
                             <>
                               {" "}
                               <option value="Wife Of">Wife Of</option>
@@ -823,20 +897,24 @@ const Rental = () => {
                           type="text"
                           className="input"
                           placeholder="Enter Details"
-                          value={tenant.fName}
+                          value={landlord.fName}
                           onChange={(e) =>
                             handleInputChange2(index, "fName", e.target.value)
                           }
                         />
                       </div>
                     )}
-
                     <div className="inputField">
-                      <label>Permanent Address:</label>
+                      <label>
+                        {landlord.category !== "individual"
+                          ? "Firm"
+                          : "Permanent"}{" "}
+                        Address:
+                      </label>
                       <input
                         type="text"
                         className="input"
-                        value={tenant.address}
+                        value={landlord.address}
                         onChange={(e) =>
                           handleInputChange2(index, "address", e.target.value)
                         }
@@ -845,6 +923,7 @@ const Rental = () => {
                     <div className="inputField">
                       <label htmlFor="state">State</label>
                       <select
+                        value={landlord.state || ""}
                         name="state"
                         id="state"
                         onChange={(e) =>
@@ -901,12 +980,12 @@ const Rental = () => {
                       </select>
                     </div>
                     <div className="inputField">
-                      <label className="District">District </label>
+                      <label htmlFor="District">District</label>
                       <input
                         type="text"
                         className="input"
                         placeholder="District..."
-                        value={tenant.district}
+                        value={landlord.district}
                         onChange={(e) =>
                           handleInputChange2(index, "district", e.target.value)
                         }
@@ -918,22 +997,34 @@ const Rental = () => {
                         type="text"
                         pattern="[0-9]{6}"
                         className="input"
-                        value={tenant.pincode}
+                        value={landlord.pincode}
                         onChange={(e) =>
                           handleInputChange2(index, "pincode", e.target.value)
                         }
                       />
                     </div>
                     <div className="inputField">
+                      <label>Contact Number:</label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={landlord.contact}
+                        onChange={(e) =>
+                          handleInputChange2(index, "contact", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    <div className="inputField">
                       <label>ID Type:</label>
                       <select
+                        value={landlord.idType || ""}
                         className="input"
-                        value={tenant.idType}
                         onChange={(e) =>
                           handleInputChange2(index, "idType", e.target.value)
                         }
                       >
-                        <option value="" disabled>
+                        <option value="" disabled selected>
                           Select ID Type
                         </option>
                         <option value="aadhaar">Aadhaar</option>
@@ -943,10 +1034,10 @@ const Rental = () => {
                       </select>
                     </div>
 
-                    {tenant.idType && (
+                    {landlord.idType && (
                       <div className="inputField">
                         <label>
-                          {tenant.idType === "aadhaar"
+                          {landlord.idType === "aadhaar"
                             ? "Aadhaar Number"
                             : "ID Number"}
                           :
@@ -954,7 +1045,7 @@ const Rental = () => {
                         <input
                           type="text"
                           className="input"
-                          value={tenant.idNumber}
+                          value={landlord.idNumber}
                           onChange={(e) =>
                             handleInputChange2(
                               index,
@@ -965,9 +1056,8 @@ const Rental = () => {
                         />
                       </div>
                     )}
-
-                    {/* Remove button for each tenant */}
                     <button
+                      style={{ backgroundColor: "red" }}
                       onClick={() => handleRemoveTenant(index)}
                       className="btn"
                     >
@@ -975,16 +1065,23 @@ const Rental = () => {
                     </button>
                   </div>
                 ))}
-                <button onClick={handleAddTenant} className="btn">
-                  Add Another Tenant
-                </button>
+
                 <div className="btnGroup">
-                  <button className="btn" onClick={() => setStep(5)}>
-                    Previous
+                  <button
+                    onClick={handleAddTenant}
+                    style={{ backgroundColor: "blue" }}
+                    className="btn"
+                  >
+                    Add Another Tenant
                   </button>
-                  <button className="btn" onClick={collectTenantDetails}>
-                    Next
-                  </button>
+                  <div className="btnGroup">
+                    <button className="btn" onClick={() => setStep(5)}>
+                      Previous
+                    </button>
+                    <button className="btn" onClick={collectTenantDetails}>
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -1179,7 +1276,100 @@ const Rental = () => {
                     </div>
                   </>
                 )}
-
+                {data.propertyType === "commercial" &&
+                  data.propertyName !== "factory" && (
+                    <div className="inputField">
+                      <label> Area Of Propertry (in sq.ft.):</label>
+                      <input
+                        className="input"
+                        onChange={(e) =>
+                          setData((pre) => ({
+                            ...pre,
+                            shopArea: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                  )}
+                {data.propertyName === "flat" && (
+                  <>
+                    <div className="inputField">
+                      <label>Flat Type:</label>
+                      <select
+                        value={data.flatType}
+                        onChange={(e) =>
+                          setData((pre) => ({
+                            ...pre,
+                            flatType: e.target.value,
+                          }))
+                        }
+                      >
+                        <option value="" selected disabled>
+                          select
+                        </option>
+                        <option value="1BHK">1BHK</option>
+                        <option value="2BHK">2BHK</option>
+                        <option value="3BHK">3BHK</option>
+                        <option value="4BHK">4BHK</option>
+                        <option value="5BHK">5BHK</option>
+                      </select>
+                    </div>
+                    <div className="inputField">
+                      <label>Floor No:</label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={data.floorNo || ""}
+                        placeholder="Enter Floor No"
+                        onChange={(e) =>
+                          setData((pre) => ({
+                            ...pre,
+                            floorNo: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div
+                      className="inputField"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                    >
+                      <label>Other Rights:</label>
+                      <label htmlFor="parking">
+                        {" "}
+                        Parking:{" "}
+                        <input
+                          type="checkbox"
+                          id="parking"
+                          onChange={(e) =>
+                            setData((pre) => ({
+                              ...pre,
+                              parking: e.target.checked,
+                            }))
+                          }
+                        />
+                      </label>
+                      <label htmlFor="terrace">
+                        {" "}
+                        Terrace:{" "}
+                        <input
+                          type="checkbox"
+                          id="terrace"
+                          onChange={(e) =>
+                            setData((pre) => ({
+                              ...pre,
+                              parking: e.target.checked,
+                            }))
+                          }
+                        />
+                      </label>
+                    </div>
+                  </>
+                )}
                 <div className="btnGroup">
                   <button className="btn" onClick={() => setStep(6)}>
                     Previous
@@ -1208,6 +1398,95 @@ const Rental = () => {
                   />
                 </div>
                 <div className="inputField">
+                  <label htmlFor="state">State</label>
+                  <select
+                    value={data.propertyState || ""}
+                    name="state"
+                    id="state"
+                    onChange={(e) =>
+                      setData((pre) => ({
+                        ...pre,
+                        propertyState: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="">Select State</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Andaman and Nicobar Islands">
+                      Andaman and Nicobar Islands
+                    </option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">
+                      Dadra and Nagar Haveli and Daman and Diu
+                    </option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Puducherry">Puducherry</option>
+                    <option value="Ladakh">Ladakh</option>
+                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                  </select>
+                </div>
+                <div className="inputField">
+                  <label>District:</label>
+                  <input
+                    type="text"
+                    className="input"
+                    value={data.propertyDisctrict || ""}
+                    onChange={(e) =>
+                      setData((pre) => {
+                        return {
+                          ...pre,
+                          propertyDisctrict: e.target.value,
+                        };
+                      })
+                    }
+                  />
+                </div>
+                <div className="inputField">
+                  <label>Pincode:</label>
+                  <input
+                    type="text"
+                    pattern="[0-9]{6}"
+                    className="input"
+                    value={data.propertyPincode || ""}
+                    onChange={(e) =>
+                      setData((pre) => {
+                        return {
+                          ...pre,
+                          propertyPincode: e.target.value,
+                        };
+                      })
+                    }
+                  />
+                </div>
+                <div className="inputField">
                   <label>Property Rent:</label>
                   <input
                     type="text"
@@ -1223,7 +1502,7 @@ const Rental = () => {
                 </div>
 
                 <div className="inputField">
-                  <label>Security Amount:</label>
+                  <label>Security Amount (If applicable):</label>
                   <input
                     type="text"
                     className="input"
@@ -1244,6 +1523,7 @@ const Rental = () => {
                       <input
                         type="radio"
                         name="ebill"
+                        checked={data.eUnit || false}
                         id="eUnit"
                         onChange={(e) =>
                           setData((pre) => ({
@@ -1259,6 +1539,7 @@ const Rental = () => {
                       <span>Fixed Rate (Rs)</span>
                       <input
                         type="radio"
+                        checked={data.eFix || false}
                         name="ebill"
                         id="fixedUnit"
                         onChange={(e) =>
@@ -1277,6 +1558,7 @@ const Rental = () => {
                         type="radio"
                         name="ebill"
                         id="society"
+                        checked={data.eSociety || false}
                         onChange={(e) =>
                           setData((pre) => ({
                             ...pre,
@@ -1293,8 +1575,10 @@ const Rental = () => {
                     <input
                       type="text"
                       className="input"
-                      placeholder={data.eFix ? "Rs" : data.eUnit ? "Unit" : ""}
-                      value={data.electricityBill || ""}
+                      placeholder={
+                        data.eFix ? "Rs" : data.eUnit ? "Per Unit" : ""
+                      }
+                      value={data?.electricityBill}
                       onChange={(e) =>
                         setData((pre) => ({
                           ...pre,
@@ -1313,13 +1597,14 @@ const Rental = () => {
                         type="radio"
                         name="water"
                         id="fixedWa"
+                        checked={data.wFix || false}
                         onChange={(e) => {
                           setData((pre) => {
                             return {
                               ...pre,
-                              waterBillFixed: e.target.checked,
-                              waterBillUnit: false,
-                              waterBillSociety: false,
+                              wFix: e.target.checked,
+                              wUnit: false,
+                              wSociety: false,
                             };
                           });
                         }}
@@ -1330,14 +1615,15 @@ const Rental = () => {
                       <input
                         type="radio"
                         name="water"
+                        checked={data.wUnit || false}
                         id="unitwa"
                         onChange={(e) => {
                           setData((pre) => {
                             return {
                               ...pre,
-                              waterBillUnit: e.target.checked,
-                              waterBillSociety: false,
-                              waterBillFixed: false,
+                              wUnit: e.target.checked,
+                              wSociety: false,
+                              wFix: false,
                             };
                           });
                         }}
@@ -1348,25 +1634,29 @@ const Rental = () => {
                       <input
                         type="radio"
                         name="water"
+                        checked={data.wSociety || false}
                         id="fixedWaSoc"
                         onChange={(e) => {
                           setData((pre) => {
                             return {
                               ...pre,
-                              waterBillSociety: e.target.checked,
-                              waterBillUnit: false,
-                              waterBillFixed: false,
+                              wSociety: e.target.checked,
+                              wUnit: false,
+                              wFix: false,
                             };
                           });
                         }}
                       />
                     </label>
                   </label>
-                  {!data.waterBillSociety && (
+                  {!data.wSociety && (
                     <input
                       type="text"
                       className="input"
-                      value={data.waterBill || ""}
+                      value={data?.waterBill}
+                      placeholder={
+                        data.wFix ? "Rs" : data.wUnit ? "Per Unit" : ""
+                      }
                       onChange={(e) =>
                         setData((pre) => ({
                           ...pre,
@@ -1382,6 +1672,7 @@ const Rental = () => {
                     type="text"
                     className="input"
                     value={data.societyMaintenance || ""}
+                    placeholder="Rs. 0.00"
                     onChange={(e) =>
                       setData((pre) => ({
                         ...pre,
@@ -1408,14 +1699,34 @@ const Rental = () => {
                 <div className="inputField">
                   <label> Rent Pay Date:</label>
                   <input
-                    type="date"
+                    type="number"
                     className="input"
-                    min={0}
+                    min={1}
+                    max={30}
                     value={data.rentPayDate || ""}
                     onChange={(e) =>
                       setData((pre) => ({
                         ...pre,
                         rentPayDate: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="inputField">
+                  <label>
+                    {" "}
+                    Lease period Extend Rate (After 11<sup>th</sup> month):
+                  </label>
+                  <input
+                    type="number"
+                    className="input"
+                    min={1}
+                    max={30}
+                    value={data.rentextextendRate || ""}
+                    onChange={(e) =>
+                      setData((pre) => ({
+                        ...pre,
+                        rentextextendRate: e.target.value,
                       }))
                     }
                   />
@@ -1465,12 +1776,13 @@ const Rental = () => {
                       }
                     }}
                   >
-                    Add Term
+                    Add Term 
                   </button>
                 </div>
                 <div className="inputField">
                   <label> Number of Tanancy months :</label>
                   <select
+                    value={data?.numberOfMonth || ""}
                     onChange={(e) => {
                       setData((pre) => {
                         return {
@@ -1488,6 +1800,7 @@ const Rental = () => {
                 <div className="inputField">
                   <label> Lock in period (in months) :</label>
                   <select
+                    value={data.lockInPeriod || ""}
                     onChange={(e) => {
                       setData((pre) => {
                         return {
@@ -1506,14 +1819,8 @@ const Rental = () => {
                   <button className="btn" onClick={() => setStep(7)}>
                     Previous
                   </button>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      validateProperty();
-                      setIsShowing(!isShowing);
-                    }}
-                  >
-                    Preview
+                  <button className="btn" onClick={validateProperty}>
+                    Pay now
                   </button>
                 </div>
               </div>
@@ -1526,9 +1833,7 @@ const Rental = () => {
           >
             {isShowing ? "Hide Preview" : "Show Preview"}
           </button>
-          <div className={`preview ${isShowing ? "active" : ""}`}>
-            <LeaseAgreement data={data} />
-          </div>
+          {LeasePage}
         </div>
       </div>
     </main>

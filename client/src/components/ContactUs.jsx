@@ -32,7 +32,7 @@ const ContactUs = () => {
   };
 
   return (
-    <main className="top max-width">
+    <main className="top max-width contact">
       <div className="container">
         <span className="big-circle"></span>
         <img src="img/shape.png" className="square" alt="" />

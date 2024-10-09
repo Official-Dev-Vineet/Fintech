@@ -1,8 +1,9 @@
 .lease-agreement {
-  font-family: Arial, sans-serif;
+  font-family: "Open Sans", sans-serif;
   line-height: 1.6;
   margin: 20px;
   user-select: none;
+
 }
 
 .lease-agreement h1,
