@@ -19,7 +19,8 @@ const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Rental = lazy(() => import("./components/Rental"));
 const AdminLogin = lazy(() => import("./components/admin/Login.jsx"));
-
+const Dashboard = lazy(() => import("./components/admin/Dashboard.jsx"));
+const Utility = lazy(() => import("./components/admin/Utility.jsx"));
 const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
@@ -34,6 +35,8 @@ const App = () => {
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/utility" element={<Utility />} />
         <Route path="/register" element={<Register />} />
         <Route path="/rental-agreement" element={<Rental />} />
         <Route path="*" element={<>404 Not Found</>} />

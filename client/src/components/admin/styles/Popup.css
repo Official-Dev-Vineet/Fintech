@@ -1,0 +1,27 @@
+.popup {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(100, 100, 100, 0.5);
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+.popup .full{
+    max-width: 500px;
+    width: 100%;
+}
+.popup .closeBtn{
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  color:var(--primaryColor);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}

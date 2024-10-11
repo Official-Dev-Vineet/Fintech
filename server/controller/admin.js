@@ -1,10 +1,9 @@
 const Admin = require("../model/admin");
 const Otp = require("../model/otp");
 const { sendEmail } = require("../mail");
-
-
-
-
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const register = async (req, res) => {
     try {
@@ -124,11 +123,15 @@ const verifyOtp = async (req, res) => {
             adminData.loginAt.push({
                 date: new Date(),
                 ip: req.ip,
-                location: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
+                location: { long: req.headers["longitude"], lat: req.headers["latitude"] },
             });
             await adminData.save();
 
-            res.status(200).json({ message: "OTP verified successfully", success: true, code: 200 });
+            // generate token 
+            const token = jwt.sign({ _id: adminData._id, email: adminData.email, role: adminData.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1d" });
+
+            // Send token to client
+            res.status(200).json({ message: "OTP verified successfully", token: token, success: true, code: 200 });
         } else {
             await Otp.findOneAndUpdate({ email }, { $inc: { totalAccess: 1 } });
             const attemptLeft = 3 - otpData.totalAccess;
