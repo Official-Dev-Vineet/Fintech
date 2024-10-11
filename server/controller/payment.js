@@ -2,7 +2,9 @@ const dotenv = require("dotenv");
 const Payment = require("../model/payment");
 const crypto = require('crypto');
 dotenv.config();
+
 // Custom XOR decryption function
+
 const customDecrypt = (encryptedData, key) => {
     let result = "";
     const decodedData = atob(encryptedData); // Decode the Base64 string
