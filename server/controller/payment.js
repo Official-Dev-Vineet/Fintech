@@ -15,8 +15,8 @@ const customDecrypt = (encryptedData, key) => {
 
 function encryptWithoutIV(data, key=process.env.ENCRYPTION_KEY) {
     const cipher = crypto.createCipher('aes-256-cbc', key);
-    let encrypted = cipher.update(data, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
+    let encrypted = cipher.update(data, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
     return encrypted;
 }
 
