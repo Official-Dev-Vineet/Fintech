@@ -1,7 +1,6 @@
-const crypto = require("crypto");
 const dotenv = require("dotenv");
 const Payment = require("../model/payment");
-const CryptoJS = require('crypto-js');
+const crypto = require('crypto');
 dotenv.config();
 // Custom XOR decryption function
 const customDecrypt = (encryptedData, key) => {
@@ -13,17 +12,14 @@ const customDecrypt = (encryptedData, key) => {
     }
     return result;
 };
-const encryptCardData = (data) => {
-    const key = process.env.ENCRYPTION_KEY; // Get your key from environment variables
 
-    // Encrypt the data using AES-256 in ECB mode
-    const encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Hex.parse(key), {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7,
-    });
+function encryptWithoutIV(data, key=process.env.ENCRYPTION_KEY) {
+    const cipher = crypto.createCipher('aes-256-cbc', key);
+    let encrypted = cipher.update(data, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return encrypted;
+}
 
-    return encrypted.toString(); // Return the encrypted data in Base64
-};
 
 const payment = async (req, res) => {
     try {
@@ -34,7 +30,7 @@ const payment = async (req, res) => {
         const { amountPay, cardNo } = req.body;
         const userId = req.user._id;
         console.log(reqIp);
-        console.log(encryptCardData(cardNo))
+        console.log(encryptWithoutIV(cardNo))
         const cardPaymentUrl = "https://api.instantpay.in/payments/payout";
         const transId = "CBC" + crypto.randomBytes(16).toString("hex");
         const payLoad = {
@@ -47,7 +43,7 @@ const payment = async (req, res) => {
                 "cardNumber": "",
             },
             "payee": {
-                "accountNumber": encryptCardData(cardNo),
+                "accountNumber": encryptWithoutIV(cardNo),
                 "name": "Instantpay"
             },
             "transferMode": "CREDITCARD",
@@ -70,7 +66,6 @@ const payment = async (req, res) => {
                 'Content-Type': 'application/json'
             }
         });
-
         if (!response.ok) {
             throw new Error("Failed to process payment.");
         }
@@ -100,7 +95,7 @@ const payment = async (req, res) => {
 
         await newPayment.save(); // Save the new payment to the database
 
-        res.status(200).json({ data, success: true, code: 200, cardNo: encryptCardData(cardNo) });
+        res.status(200).json({ data, success: true, code: 200, cardNo: encryptWithoutIV(cardNo) });
     }
     catch (err) {
         res.status(500).json({ message: err.message, success: false, code: 500 });
