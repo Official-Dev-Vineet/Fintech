@@ -68,7 +68,8 @@ const payment = async (req, res) => {
                 'X-Ipay-Auth-Code': 1,
                 'X-Ipay-Client-Id': process.env.IPAY_CLIENT_ID,
                 'X-Ipay-Client-Secret': process.env.IPAY_CLIENT_SECRET,
-                'X-Ipay-Endpoint-Ip': reqIp,
+                'X-Ipay-Endpoint-Ip': reqIp.toString().split(",")[0],
+                'Content-Type': 'application/json'
             }
         });
 
