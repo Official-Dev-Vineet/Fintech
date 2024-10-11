@@ -13,12 +13,21 @@ const customDecrypt = (encryptedData, key) => {
     return result;
 };
 
-function encryptWithoutIV(data, key=process.env.ENCRYPTION_KEY) {
-    const cipher = crypto.createCipher('aes-256-cbc', key);
+const encryptCardData = (data) => {
+    const key = process.env.ENCRYPTION_KEY // Generate a random 32-byte key
+    const iv = crypto.randomBytes(16); // Generate a random 16-byte IV
+
+    // Create cipher
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+
+    // Encrypt the data
     let encrypted = cipher.update(data, 'utf8', 'base64');
     encrypted += cipher.final('base64');
-    return encrypted;
-}
+
+    // Combine IV and encrypted data
+    const combinedData = iv.toString('base64') + ':' + encrypted; // Store IV with encrypted data
+    return combinedData // Return the encrypted data and key
+};
 
 
 const payment = async (req, res) => {
@@ -30,7 +39,7 @@ const payment = async (req, res) => {
         const { amountPay, cardNo } = req.body;
         const userId = req.user._id;
         console.log(reqIp);
-        console.log(encryptWithoutIV(cardNo))
+        console.log(encryptCardData(cardNo))
         const cardPaymentUrl = "https://api.instantpay.in/payments/payout";
         const transId = "CBC" + crypto.randomBytes(16).toString("hex");
         const payLoad = {
@@ -43,7 +52,7 @@ const payment = async (req, res) => {
                 "cardNumber": "",
             },
             "payee": {
-                "accountNumber": encryptWithoutIV(cardNo),
+                "accountNumber": encryptCardData(cardNo),
                 "name": "Instantpay"
             },
             "transferMode": "CREDITCARD",
@@ -95,7 +104,7 @@ const payment = async (req, res) => {
 
         await newPayment.save(); // Save the new payment to the database
 
-        res.status(200).json({ data, success: true, code: 200, cardNo: encryptWithoutIV(cardNo) });
+        res.status(200).json({ data, success: true, code: 200, cardNo: encryptCardData(cardNo) });
     }
     catch (err) {
         res.status(500).json({ message: err.message, success: false, code: 500 });
