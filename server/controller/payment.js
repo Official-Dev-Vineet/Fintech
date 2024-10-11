@@ -14,17 +14,15 @@ const customDecrypt = (encryptedData, key) => {
 };
 
 const encryptCardData = (data) => {
-    const key = crypto.randomBytes(32); // You can replace this with a constant key from config
-    const algorithm = "aes-256-cbc";
-    const iv = crypto.randomBytes(16); // Initialization vector for AES-256-CBC (16 bytes)
+    const key = process.env.ENCRYPTION_KEY; // Replace this with a constant key if necessary
+    const algorithm = "aes-256-ecb"; // Use ECB mode
 
-    const cipher = crypto.createCipheriv(algorithm, key, iv);
+    const cipher = crypto.createCipheriv(algorithm, Buffer.from(key, 'hex'), null); // No IV for ECB mode
 
     let encrypted = cipher.update(data, "utf8", "base64");
     encrypted += cipher.final("base64");
 
-    // Return the IV and encrypted data (IV is required for decryption)
-    return iv.toString("base64") + ":" + encrypted;
+    return encrypted; // Return only the encrypted data
 };
 
 const payment = async (req, res) => {
