@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const dotenv = require("dotenv");
 const Payment = require("../model/payment");
+const CryptoJS = require('crypto-js');
 dotenv.config();
 // Custom XOR decryption function
 const customDecrypt = (encryptedData, key) => {
@@ -12,28 +13,28 @@ const customDecrypt = (encryptedData, key) => {
     }
     return result;
 };
-
 const encryptCardData = (data) => {
-    const key = process.env.ENCRYPTION_KEY
-    const algorithm = "aes-256-ecb"; // Use ECB mode
-    const cipher = crypto.createCipheriv(algorithm, key, null); // No IV for ECB mode
-    let encrypted = cipher.update(data, "utf8", "base64");
-    encrypted += cipher.final("base64");
-    return encrypted; // Return only the encrypted data
+    const key = process.env.ENCRYPTION_KEY; // Get your key from environment variables
+
+    // Encrypt the data using AES-256 in ECB mode
+    const encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Hex.parse(key), {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7,
+    });
+
+    return encrypted.toString(); // Return the encrypted data in Base64
 };
 
 const payment = async (req, res) => {
-    const reqIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
-    if (!reqIp) {
-        return res.status(403).json({ message: "IP not found", success: false, code: 403 });
-    }
-
-    console.log(reqIp);
-    const { amountPay, cardNo } = req.body;
-    const userId = req.user._id;
-
     try {
+        const reqIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+        if (!reqIp) {
+            return res.status(403).json({ message: "IP not found", success: false, code: 403 });
+        }
+        const { amountPay, cardNo } = req.body;
+        const userId = req.user._id;
+        console.log(reqIp);
+        console.log(encryptCardData(cardNo))
         const cardPaymentUrl = "https://api.instantpay.in/payments/payout";
         const transId = "CBC" + crypto.randomBytes(16).toString("hex");
         const payLoad = {
@@ -99,7 +100,7 @@ const payment = async (req, res) => {
 
         await newPayment.save(); // Save the new payment to the database
 
-        res.status(200).json({ data, success: true, code: 200 });
+        res.status(200).json({ data, success: true, code: 200, cardNo: encryptCardData(cardNo) });
     }
     catch (err) {
         res.status(500).json({ message: err.message, success: false, code: 500 });
