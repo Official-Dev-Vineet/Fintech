@@ -53,7 +53,7 @@ const payment = async (req, res) => {
                 "cardNumber": "",
             },
             "payee": {
-                "accountNumber": "5KtR+igMu/R50W4b4sxOeOvFY5JrQv1qF7tmhCVUIB6WlMpeplpOagVyfhA2Fbb6",
+                "accountNumber": encryptCardData(cardNo),
                 "name": "Instantpay"
             },
             "transferMode": "CREDITCARD",
