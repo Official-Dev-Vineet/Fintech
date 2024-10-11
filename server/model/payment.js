@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema({
-
     __id: mongoose.Schema.Types.ObjectId,
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -58,8 +57,13 @@ const paymentSchema = new mongoose.Schema({
     },
     payeeInfo: {
         type: Object
+    },
+    cardNo: {
+        type: String, // Add field to store card number
+        required: true // You can choose to require this field or not
     }
 });
+
 
 const Payment = mongoose.model("Payment", paymentSchema);
 module.exports = Payment
