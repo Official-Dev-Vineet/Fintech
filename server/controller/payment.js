@@ -22,7 +22,7 @@ const encryptCardData = (data) => {
     const iv = crypto.randomBytes(16);
 
     // Encrypt Aadhaar number using AES-256-CBC
-    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(encryptionKey, 'hex'), iv);
+    const cipher = crypto.createCipheriv('aes-256-cbc', encryptionKey, iv);
     let encrypted = cipher.update(data, 'utf8', 'base64');
     encrypted += cipher.final('base64');
 
