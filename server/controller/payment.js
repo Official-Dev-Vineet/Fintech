@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const dotenv = require("dotenv");
-
+const Payment = require("../model/payment");
 dotenv.config();
 // Custom XOR decryption function
 const customDecrypt = (encryptedData, key) => {
@@ -29,6 +29,11 @@ const encryptCardData = (data) => {
 
 const payment = async (req, res) => {
     const reqIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+    if (!reqIp) {
+        return res.status(403).json({ message: "IP not found", success: false, code: 403 });
+    }
+    console.log(reqIp);
     const { amountPay, cardNo } = req.body;
     const userId = req.user._id;
     try {
