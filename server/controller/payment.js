@@ -14,9 +14,9 @@ const customDecrypt = (encryptedData, key) => {
 };
 
 const encryptCardData = (data) => {
-    const key = process.env.ENCRYPTION_KEY // Generate a random 32-byte key
-    const iv = crypto.randomBytes(16); // Generate a random 16-byte IV
-
+    const key = process.env.ENCRYPTION_KEY; // This must be a 32-byte key for AES-256
+    const iv = crypto.randomBytes(16); // 16-byte IV
+    
     // Create cipher
     const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
 
@@ -24,9 +24,10 @@ const encryptCardData = (data) => {
     let encrypted = cipher.update(data, 'utf8', 'base64');
     encrypted += cipher.final('base64');
 
-    // Combine IV and encrypted data
-    const combinedData = iv.toString('base64') + ':' + encrypted; // Store IV with encrypted data
-    return combinedData // Return the encrypted data and key
+    // Combine IV and encrypted data (Base64 encode both)
+    const combinedData = iv.toString('base64') + ':' + encrypted;
+
+    return combinedData; // Return the IV + encrypted data
 };
 
 
