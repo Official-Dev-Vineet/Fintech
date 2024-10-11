@@ -14,21 +14,21 @@ const customDecrypt = (encryptedData, key) => {
 };
 
 const encryptCardData = (data) => {
-    const key = process.env.ENCRYPTION_KEY; // This must be a 32-byte key for AES-256
-    const iv = crypto.randomBytes(16); // 16-byte IV
+    const encryptionKey = process.env.ENCRYPTION_KEY; // 32-byte key for AES-256
 
-    // Create cipher
-    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    // Generate a random 16-byte IV (for AES-256-CBC)
+    const iv = crypto.randomBytes(16);
 
-    // Encrypt the data
+    // Encrypt Aadhaar number using AES-256-CBC
+    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(encryptionKey, 'hex'), iv);
     let encrypted = cipher.update(data, 'utf8', 'base64');
     encrypted += cipher.final('base64');
 
-    // Combine IV and encrypted data (Base64 encode both)
-    const combinedData = iv.toString('base64') + ':' + encrypted;
+    // Combine IV and encrypted data (base64 encode the combined result)
+    const encryptedData = Buffer.concat([iv, Buffer.from(encrypted, 'base64')]).toString('base64');
 
-    return combinedData; // Return the IV + encrypted data
-};
+    return encryptedData; // Return the encrypted Aadhaar number
+}
 
 
 const payment = async (req, res) => {
