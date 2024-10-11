@@ -16,7 +16,7 @@ const customDecrypt = (encryptedData, key) => {
 const encryptCardData = (data) => {
     const key = process.env.ENCRYPTION_KEY; // This must be a 32-byte key for AES-256
     const iv = crypto.randomBytes(16); // 16-byte IV
-    
+
     // Create cipher
     const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
 
@@ -53,7 +53,7 @@ const payment = async (req, res) => {
                 "cardNumber": "",
             },
             "payee": {
-                "accountNumber": encryptCardData(cardNo),
+                "accountNumber": "5KtR+igMu/R50W4b4sxOeOvFY5JrQv1qF7tmhCVUIB6WlMpeplpOagVyfhA2Fbb6",
                 "name": "Instantpay"
             },
             "transferMode": "CREDITCARD",
