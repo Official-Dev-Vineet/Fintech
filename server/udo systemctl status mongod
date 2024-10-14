@@ -1,0 +1,14 @@
+[0;1;32m●[0m mongod.service - MongoDB Database Server
+     Loaded: loaded (/etc/systemd/system/mongod.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Mon 2024-10-14 05:47:36 UTC; 50min ago
+   Main PID: 2480 (mongod)
+      Tasks: 30 (limit: 9395)
+     Memory: 70.8M
+        CPU: 8.153s
+     CGroup: /system.slice/mongod.service
+             └─2480 /usr/bin/mongod --config /etc/mongod.conf
+
+Oct 14 05:47:36 server.localhost.com systemd[1]: Started MongoDB Database Server.
+Oct 14 05:47:37 server.localhost.com mongod[2480]: {"t":{"$date":"2024-10-14T05:47:36.998Z"},"s":"I",  "c":"CONTROL",  "id":7484500, "ctx":"-","msg":"Environment variable MONGODB_CONFIG_OVERRIDE_NOFORK == 1, overriding \"processManagement.fork\" to false"}
+Oct 14 06:16:31 server.localhost.com systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mmongod.service: Current command vanished from the unit file, execution of the command list won't be resumed.[0m
+Oct 14 06:37:27 server.localhost.com systemd[1]: [0;1;39m[0;1;31m[0;1;39m/etc/systemd/system/mongod.service:8: PIDFile= references a path below legacy directory /var/run/, updating /var/run/mongodb/mongod.pid → /run/mongodb/mongod.pid; please update the unit file accordingly.[0m

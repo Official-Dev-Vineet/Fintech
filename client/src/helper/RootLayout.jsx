@@ -10,7 +10,7 @@ import Sidebar from "../components/admin/Sidebar";
 
 const RootLayout = () => {
   const location = useLocation();
-  const [isShow, setIsShow] = useState(false);
+  const [isShow, setIsShow] = useState(true);
   useEffect(() => {
     const path = location.pathname.split("/");
     if (path[path.length - 2] === "admin") {

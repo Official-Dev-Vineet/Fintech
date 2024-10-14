@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import Logo from "../utils/logo";
+import Logo from "../utils/Logo";
 import "./styles/Navbar.css";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
