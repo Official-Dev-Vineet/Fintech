@@ -32,7 +32,7 @@ const RootLayout = () => {
         </>
       ) : (
         <div className="admin">
-          <AdminNav companyName="Chagans Business Center" />
+          <AdminNav companyName="Chagans Technologies Limited" />
           <div className="adminGridView">
             <Sidebar />
             <Outlet />
