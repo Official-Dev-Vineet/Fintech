@@ -22,6 +22,7 @@ const AdminLogin = lazy(() => import("./components/admin/Login.jsx"));
 const Dashboard = lazy(() => import("./components/admin/Dashboard.jsx"));
 const Utility = lazy(() => import("./components/admin/Utility.jsx"));
 const Account = lazy(() => import("./components/admin/Account.jsx"));
+const MaintenancePage = lazy(() => import("./helper/PageNotFound.jsx"));
 const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
@@ -34,14 +35,15 @@ const App = () => {
         <Route path="/legal/cookie-policy" element={<Cookie />} />
         <Route path="/legal/refund-policy" element={<Refund />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<AdminLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/myAccount" element={<Account />} />
+        <Route path="/utility-payments" element={<Utility />} />
         <Route path="/admin/utility" element={<Utility />} />
         <Route path="/register" element={<Register />} />
         <Route path="/rental-agreement" element={<Rental />} />
-        <Route path="*" element={<>404 Not Found</>} />
+        <Route path="*" element={<MaintenancePage/>} />
       </Route>
     )
   );

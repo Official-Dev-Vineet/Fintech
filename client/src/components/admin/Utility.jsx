@@ -1,5 +1,5 @@
 import mobileIcon from "../../assets/mobileIcon.png";
-import DTHIcon from "../../assets/dthIcon.png";
+import DTHIcon from "../../assets/DTHIcon.png";
 import electricityIcon from "../../assets/electricityIcon.png";
 import fastagIcon from "../../assets/fasttagIcon.png";
 

@@ -46,31 +46,6 @@
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
   position: relative;
 }
-
-.admin .contentBox .headerArea::before {
-  content: "";
-  position: absolute;
-  top: calc(100% - 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0%;
-  height: 5px;
-  background-color: #391200;
-  opacity: 0.8;
-  z-index: 1;
-  border-radius: 10px;
-  animation: loading 10s linear infinite;
-}
-
-@keyframes loading {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 80%;
-  }
-}
-
 .admin .contentBox .contentBody .services {
   margin-top: 2rem;
   display: grid;

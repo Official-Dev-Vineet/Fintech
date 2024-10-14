@@ -6,6 +6,7 @@ import rentAgreement from "../../assets/rentAgreement.png";
 import affidavit from "../../assets/affidavit.png";
 import w2wIcon from "../../assets/w2wIcon.png";
 import loanPayerIcon from "../../assets/loanpayerIcon.png";
+import Insurance from "../../assets/insurance.png"
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -137,7 +138,7 @@ const ContentBox = () => {
 
       <div className="contentBody">
         <div className="services">
-          <Link to={"/admin/payout"} className="service">
+          <Link to={"/admin/payout"} className="service" style={{display:"none"}}>
             <div className="imageWrapper">
               <img src={payOut} alt="payout" />
             </div>
@@ -174,11 +175,17 @@ const ContentBox = () => {
             </div>
             <h3>Loan Payer</h3>
           </Link>
-          <Link onClick={() => setWalletTransfer(true)} className="service">
+          <Link onClick={() => setWalletTransfer(true)} className="service" style={{display:"none"}}>
             <div className="imageWrapper">
               <img src={w2wIcon} alt="creditCard" />
             </div>
             <h3>Wallet to Wallet</h3>
+          </Link>
+          <Link to="/admin/insurance" className="service" >
+            <div className="imageWrapper">
+              <img src={Insurance} alt="insurance" />
+            </div>
+            <h3>Insurance</h3>
           </Link>
         </div>
         {walletTransfer && (
