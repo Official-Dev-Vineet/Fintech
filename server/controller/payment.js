@@ -111,7 +111,7 @@ const payment = async (req, res) => {
     }
     catch (err) {
         res.status(500).json({ message: err.message, success: false, code: 500 });
-    }
+    }   
 };
 module.exports = {
     payment

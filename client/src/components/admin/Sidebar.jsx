@@ -4,7 +4,7 @@ import { MdDashboard } from "react-icons/md";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { MdAccountCircle } from "react-icons/md";
 import { RiLogoutCircleRFill } from "react-icons/ri";
-import { getCookie } from "./commonFunc";
+import { deleteCookie, getCookie } from "./commonFunc";
 import { useEffect } from "react";
 
 const Sidebar = () => {
@@ -15,6 +15,13 @@ const Sidebar = () => {
       navigate("/admin-login");
     }
   }, []);
+  const logoutHandler = () => {
+    const isLogout = confirm("Are you sure you want to logout?");
+    if (isLogout) {
+      deleteCookie("token");
+      navigate("/admin-login");
+    }
+  };
   return (
     <aside>
       <ul>
@@ -45,7 +52,7 @@ const Sidebar = () => {
         </li>
       </ul>
 
-      <button className="logout">
+      <button className="logout" onClick={logoutHandler}>
         <span className="icon">
           <RiLogoutCircleRFill />
         </span>{" "}

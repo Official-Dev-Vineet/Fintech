@@ -21,6 +21,7 @@ const Rental = lazy(() => import("./components/Rental"));
 const AdminLogin = lazy(() => import("./components/admin/Login.jsx"));
 const Dashboard = lazy(() => import("./components/admin/Dashboard.jsx"));
 const Utility = lazy(() => import("./components/admin/Utility.jsx"));
+const Account = lazy(() => import("./components/admin/Account.jsx"));
 const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/myAccount" element={<Account />} />
         <Route path="/admin/utility" element={<Utility />} />
         <Route path="/register" element={<Register />} />
         <Route path="/rental-agreement" element={<Rental />} />

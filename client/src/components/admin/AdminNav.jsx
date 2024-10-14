@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import "./styles/AdminNav.css";
 const AdminNav = ({ companyName }) => {
- 
   return (
     <nav>
       <div className="logo">{companyName}</div>

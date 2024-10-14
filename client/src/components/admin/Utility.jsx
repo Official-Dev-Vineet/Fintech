@@ -3,6 +3,7 @@ import DTHIcon from "../../assets/dthIcon.png";
 import electricityIcon from "../../assets/electricityIcon.png";
 import fastagIcon from "../../assets/fasttagIcon.png";
 
+
 import { useState } from "react";
 import "./styles/Utility.css";
 import Mobile from "./services/Mobile";
@@ -28,6 +29,7 @@ const Utility = () => {
       name: "FASTag",
       icon: fastagIcon,
     },
+   
   ];
   return (
     <section className="utility">

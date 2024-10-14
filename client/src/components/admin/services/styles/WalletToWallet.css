@@ -1,0 +1,124 @@
+.walletToWallet {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.walletToWallet h2 {
+  text-align: center;
+}
+
+.walletToWallet form {
+  width: 80%;
+}
+.walletToWallet .inputField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+  position: relative;
+  margin-top: 0.5rem;
+  color: #111;
+}
+
+.walletToWallet .inputField input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  outline: none;
+  color: #111;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.walletToWallet .inputField input:focus {
+  border: 1px solid #111;
+}
+
+.walletToWallet .inputField label {
+  margin-bottom: 0.5rem;
+}
+
+.walletToWallet button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background-color: var(--primaryColor);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.walletToWallet button:hover {
+  background-color: #fff;
+  color: var(--primaryColor);
+  box-shadow: 0 0 0 1px var(--primaryColor);
+}
+
+.walletToWallet .msg {
+  color: var(--primaryColor);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 0.9em;
+}
+
+.walletToWallet .msg.success {
+  color: #07803a;
+}
+
+.walletToWallet .input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.walletToWallet .input label {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.walletToWallet .input input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  outline: none;
+  color: #111;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.walletToWallet .input input:focus {
+  border: 1px solid #111;
+}
+
+.walletToWallet .input input::placeholder {
+  color: #111;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.walletToWallet .input input:focus::placeholder {
+  color: #111;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.walletToWallet .input input:focus::placeholder {
+  color: #111;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+}
