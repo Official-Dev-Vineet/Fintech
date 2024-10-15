@@ -1,7 +1,4 @@
-import mobileIcon from "../../assets/mobileIcon.png";
-import DTHIcon from "../../assets/DTHIcon.png";
-import electricityIcon from "../../assets/electricityIcon.png";
-import fastagIcon from "../../assets/fasttagIcon.png";
+
 
 
 import { useState } from "react";
@@ -40,24 +37,8 @@ const Utility = () => {
       </p>
 
       <div className="services">
-        {serviceList.map((item) => (
-          <div
-            className="service"
-            key={item.name}
-            onClick={() => setService(item.name)}
-          >
-            <div className="imageWrapper">
-              <img src={item.icon} alt={item.name} />
-            </div>
-            <h3>{item.name}</h3>
-          </div>
-        ))}
-        {service === "Mobile" && (
-          <Popup cmp={<Mobile />} func={() => setService("")} />
-        )}
-        {
-          service === "FASTag" && (<Popup cmp={<Fastag />} func={() => setService("")} />)
-        }
+       
+        
       </div>
     </section>
   );

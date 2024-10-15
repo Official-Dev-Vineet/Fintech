@@ -6,7 +6,11 @@ import rentAgreement from "../../assets/rentAgreement.png";
 import affidavit from "../../assets/affidavit.png";
 import w2wIcon from "../../assets/w2wIcon.png";
 import loanPayerIcon from "../../assets/loanpayerIcon.png";
-import Insurance from "../../assets/insurance.png"
+import Insurance from "../../assets/insurance.png";
+import mobileIcon from "../../assets/mobileIcon.png";
+import DTHIcon from "../../assets/DTHIcon.png";
+import electricityIcon from "../../assets/electricityIcon.png";
+import fastagIcon from "../../assets/fasttagIcon.png";
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -22,6 +26,26 @@ const ContentBox = () => {
     amountPay: "",
   });
 
+  const [service, setService] = useState("");
+
+  const serviceList = [
+    {
+      name: "Mobile",
+      icon: mobileIcon,
+    },
+    {
+      name: "Dth",
+      icon: DTHIcon,
+    },
+    {
+      name: "Electricity",
+      icon: electricityIcon,
+    },
+    {
+      name: "FASTag",
+      icon: fastagIcon,
+    },
+  ];
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [walletTransfer, setWalletTransfer] = useState(false);
@@ -102,7 +126,7 @@ const ContentBox = () => {
   function getGreeting() {
     const hour = new Date().getHours();
     let greetingCategory;
-    
+
     if (hour >= 5 && hour < 12) {
       greetingCategory = "morning";
     } else if (hour >= 12 && hour < 16) {
@@ -138,7 +162,11 @@ const ContentBox = () => {
 
       <div className="contentBody">
         <div className="services">
-          <Link to={"/admin/payout"} className="service" style={{display:"none"}}>
+          <Link
+            to={"/admin/payout"}
+            className="service"
+            style={{ display: "none" }}
+          >
             <div className="imageWrapper">
               <img src={payOut} alt="payout" />
             </div>
@@ -173,15 +201,31 @@ const ContentBox = () => {
             <div className="imageWrapper">
               <img src={loanPayerIcon} alt="creditCard" />
             </div>
-            <h3>Loan Payer</h3>
+            <h3>Loan Repayment</h3>
           </Link>
-          <Link onClick={() => setWalletTransfer(true)} className="service" style={{display:"none"}}>
+          {serviceList.map((item) => (
+            <div
+              className="service"
+              key={item.name}
+              onClick={() => setService(item.name)}
+            >
+              <div className="imageWrapper">
+                <img src={item.icon} alt={item.name} />
+              </div>
+              <h3>{item.name}</h3>
+            </div>
+          ))}
+          <Link
+            onClick={() => setWalletTransfer(true)}
+            className="service"
+            style={{ display: "none" }}
+          >
             <div className="imageWrapper">
               <img src={w2wIcon} alt="creditCard" />
             </div>
             <h3>Wallet to Wallet</h3>
           </Link>
-          <Link to="/admin/insurance" className="service" >
+          <Link to="/admin/insurance" className="service">
             <div className="imageWrapper">
               <img src={Insurance} alt="insurance" />
             </div>
@@ -193,6 +237,12 @@ const ContentBox = () => {
             cmp={<WalletToWallet />}
             func={() => setWalletTransfer(false)}
           />
+        )}
+        {service === "Mobile" && (
+          <Popup cmp={<Mobile />} func={() => setService("")} />
+        )}
+        {service === "FASTag" && (
+          <Popup cmp={<Fastag />} func={() => setService("")} />
         )}
         <div className={`creditSide ${isOpen ? "open" : ""}`}>
           <aside className="creditSideBar">

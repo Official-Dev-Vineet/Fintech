@@ -9,12 +9,13 @@ const Home = () => {
   const sliderItems = [
     {
       image:
-        "https://globalfintechseries.com/wp-content/uploads/Google-Pay-India-signs-MoU-with-NPCI-International-for-Global-Expansion-of-UPI.webp",
-      title: "Aadhaar Banking (AEPS)",
-      description: "Banking Services made easy – anytime, anywhere",
+        "https://assets-news.housing.com/news/wp-content/uploads/2021/09/17191257/Rent-agreement-in-Ghaziabad-FB-1200x700-compressed.jpg",
+      title: "Rental Agreement",
+      description: "Rental Agreement Services made easy – anytime, anywhere",
       path: "/about-us",
-      pathname: "Know more",
+      pathname: "Get Started",
     },
+    
     {
       image: "http://b2c.cscbls.com/images/slider/ss.png",
       title: "MICRO ATMs",
@@ -40,12 +41,13 @@ const Home = () => {
     },
     {
       image:
-        "https://assets-news.housing.com/news/wp-content/uploads/2021/09/17191257/Rent-agreement-in-Ghaziabad-FB-1200x700-compressed.jpg",
-      title: "Rental Agreement",
-      description: "Rental Agreement Services made easy – anytime, anywhere",
+        "https://globalfintechseries.com/wp-content/uploads/Google-Pay-India-signs-MoU-with-NPCI-International-for-Global-Expansion-of-UPI.webp",
+      title: "Aadhaar Banking (AEPS)",
+      description: "Banking Services made easy – anytime, anywhere",
       path: "/about-us",
-      pathname: "Get Started",
+      pathname: "Know more",
     },
+   
     {
       image:
         "https://cdn.pixabay.com/photo/2021/03/19/13/15/bill-6107551_640.png",
