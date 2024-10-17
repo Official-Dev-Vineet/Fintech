@@ -1,0 +1,64 @@
+.addMoney {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+.addMoney h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primaryColor);
+}
+.addMoney form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.addMoney .inputField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+  position: relative;
+  margin-top: 0.5rem;
+  color: #111;
+}
+.addMoney .inputField input {
+  padding: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  outline: none;
+  font-family: "open sans", sans-serif;
+}
+.addMoney .inputField label {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.addMoney button {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: var(--primaryColor);
+  box-shadow: 0 0 0 2px var(--primaryColor);
+}
+.addMoney button:hover {
+  background-color: var(--primaryColor);
+  color: #fff;
+}
+
+.addMoney .error {
+  color: red;
+  font-size: 0.8rem;
+  margin-block: 0.5rem;
+}

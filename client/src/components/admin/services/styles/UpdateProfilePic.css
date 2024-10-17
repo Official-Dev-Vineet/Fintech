@@ -1,0 +1,84 @@
+.updateProfilePic {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.updateProfilePic h1 {
+  text-align: center;
+  color: var(--primaryColor);
+  margin-bottom: 20px;
+}
+.updateProfilePic form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.updateProfilePic form .inputField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+  position: relative;
+  margin-top: 0.5rem;
+  color: #111;
+}
+
+.updateProfilePic form .inputField input {
+  padding: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  outline: none;
+  font-family: "open sans", sans-serif;
+  font-size: 1rem;
+  color: #111;
+}
+
+.updateProfilePic form .inputField input:focus {
+  border: 1px solid #111;
+}
+
+.updateProfilePic form .inputField input::placeholder {
+  color: #111;
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+.updateProfilePic form .inputField label {
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.updateProfilePic form button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--primaryColor);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.updateProfilePic form button:hover {
+  background-color: #fff;
+  color: var(--primaryColor);
+  box-shadow: 0 0 0 2px var(--primaryColor);
+}
+
+.updateProfilePic .error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 0.5rem;
+}
+
+.updateProfilePic .success {
+  color: green;
+  font-size: 0.9em;
+  margin-top: 0.5rem;
+}

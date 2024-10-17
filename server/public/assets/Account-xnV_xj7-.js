@@ -1,1 +1,0 @@
-import{r as s,g as o,j as n}from"./index-awYUKrVA.js";const r=()=>{const[a,e]=s.useState({}),t=o("token");return s.useEffect(()=>{t&&e(t)},[]),n.jsx("section",{className:"account"})};export{r as default};

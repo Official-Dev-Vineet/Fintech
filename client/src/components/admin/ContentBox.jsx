@@ -1,6 +1,5 @@
 import "./styles/ContentBox.css";
 import payOut from "../../assets/payout.png";
-import utility from "../../assets/utility.png";
 import creditCard from "../../assets/creditCard.png";
 import rentAgreement from "../../assets/rentAgreement.png";
 import affidavit from "../../assets/affidavit.png";
@@ -11,13 +10,13 @@ import mobileIcon from "../../assets/mobileIcon.png";
 import DTHIcon from "../../assets/DTHIcon.png";
 import electricityIcon from "../../assets/electricityIcon.png";
 import fastagIcon from "../../assets/fasttagIcon.png";
-
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
 import { getCookie } from "./commonFunc";
 import Popup from "./Popup";
 import WalletToWallet from "./services/WalletToWallet";
+import Mobile from "./services/Mobile";
 
 const ContentBox = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +24,10 @@ const ContentBox = () => {
     cardNo: "",
     amountPay: "",
   });
+  const { state } = useLocation();
+  const [userData, setUserData] = useState(state);
 
+  const navigate = useNavigate();
   const [service, setService] = useState("");
 
   const serviceList = [
@@ -89,15 +91,10 @@ const ContentBox = () => {
 
       const data = await response.json();
       data.code === 200 && setFormData({ cardNo: "", amountPay: "" });
-      data.code === 200 && setIsOpen(false);
-      setIsOpen(false);
     } catch (error) {
       setErrorMessage(error.message || "Payment failed. Try again later.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
-
   // Array of greeting messages
   const greetings = {
     morning: [
@@ -143,41 +140,75 @@ const ContentBox = () => {
     return messages[randomIndex];
   }
 
+  const token = getCookie("token");
+  const fetchBalance = async (e) => {
+    const target = e.target;
+
+    if (!token) {
+      alert("Please login to continue");
+      navigate("/login");
+    } else {
+      try {
+        target.onclick = null;
+        target.innerText = "Fetching balance...";
+        const res = await fetch(
+          `${import.meta.env.VITE_SERVER_URL}/user/checkBalance`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch balance.");
+        }
+        const data =await res.json();
+        console.log(data);
+        data?.success && (target.innerText = "₹ " + data.balance);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <section className="contentBox">
       <div className="headerArea">
         <h2>
-          Welcome, <span className="themeText">Admin</span>
+          Welcome,{" "}
+          <span className="themeText">
+            {userData?.name || "Chagans Services"}
+          </span>
         </h2>
         <p className="greeting">{getGreeting()}</p>
       </div>
       <div className="contentHeader">
         <div className="card">
-          <h3>Chagans Fintech</h3>
+          <h3>{userData?.companyDetails?.shopName}</h3>
           <h4>Account Name: Suraj Yadav</h4>
-          <p className="cardNumber"> **** **** **** 1234 </p>
-          <p>balance : ₹ {}</p>
+          <p className="cardNumber">
+            {" "}
+            +91 **** ** {userData?.phoneNumber.toString().slice(-4)}{" "}
+          </p>
+          <p>
+            balance :{" "}
+            <span className="balance" onClick={fetchBalance}>
+              ₹ ***
+            </span>
+          </p>
         </div>
       </div>
 
       <div className="contentBody">
         <div className="services">
-          <Link
-            to={"/admin/payout"}
-            className="service"
-            style={{ display: "none" }}
-          >
+          <Link to={"/admin/payout"} className="service">
             <div className="imageWrapper">
               <img src={payOut} alt="payout" />
             </div>
             <h3>Payout</h3>
-          </Link>
-
-          <Link to={"/admin/utility"} className="service">
-            <div className="imageWrapper">
-              <img src={utility} alt="utility" />
-            </div>
-            <h3>Utility</h3>
           </Link>
           <Link onClick={() => setIsOpen(true)} className="service">
             <div className="imageWrapper">
@@ -215,11 +246,7 @@ const ContentBox = () => {
               <h3>{item.name}</h3>
             </div>
           ))}
-          <Link
-            onClick={() => setWalletTransfer(true)}
-            className="service"
-            style={{ display: "none" }}
-          >
+          <Link onClick={() => setWalletTransfer(true)} className="service">
             <div className="imageWrapper">
               <img src={w2wIcon} alt="creditCard" />
             </div>
@@ -244,44 +271,46 @@ const ContentBox = () => {
         {service === "FASTag" && (
           <Popup cmp={<Fastag />} func={() => setService("")} />
         )}
-        <div className={`creditSide ${isOpen ? "open" : ""}`}>
-          <aside className="creditSideBar">
-            <h2>Enter Card details</h2>
-            <button onClick={() => setIsOpen(false)} className="closeBtn">
-              <IoMdCloseCircle />
-            </button>
-            <form className="creditCard" onSubmit={handleSubmit}>
-              <div className="inputField">
-                <input
-                  type="text"
-                  pattern="^[0-9]{16}$"
-                  placeholder="Enter Card Number "
-                  required
-                  maxLength={16}
-                  id="cardNo"
-                  value={formData.cardNo}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="inputField">
-                <input
-                  type="text"
-                  pattern="^[0-9]+$"
-                  required
-                  placeholder="Enter Amount Rs. "
-                  id="amountPay"
-                  value={formData.amountPay}
-                  onChange={handleInputChange}
-                />
-              </div>
-              {errorMessage && <p className="error">{errorMessage}</p>}
-
-              <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Processing..." : "Pay Now"}
+        {isOpen && (
+          <div className={`creditSide ${isOpen ? "open" : ""}`}>
+            <aside className="creditSideBar">
+              <h2>Enter Card details</h2>
+              <button onClick={() => setIsOpen(false)} className="closeBtn">
+                <IoMdCloseCircle />
               </button>
-            </form>
-          </aside>
-        </div>
+              <form className="creditCard" onSubmit={handleSubmit}>
+                <div className="inputField">
+                  <input
+                    type="text"
+                    pattern="^[0-9]{16}$"
+                    placeholder="Enter Card Number "
+                    required
+                    maxLength={16}
+                    id="cardNo"
+                    value={formData.cardNo}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="inputField">
+                  <input
+                    type="text"
+                    pattern="^[0-9]+$"
+                    required
+                    placeholder="Enter Amount Rs. "
+                    id="amountPay"
+                    value={formData.amountPay}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {errorMessage && <p className="error">{errorMessage}</p>}
+
+                <button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Processing..." : "Pay Now"}
+                </button>
+              </form>
+            </aside>
+          </div>
+        )}
       </div>
     </section>
   );

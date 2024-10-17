@@ -24,6 +24,7 @@ app.get("*", (req, res) => {
 // my api's routes
 app.use("/admin", require("./routes/admin"));
 app.use("/payment", require("./routes/payment"));
+app.use("/user", require("./routes/user"));
 
 app.listen("5000", () => {
     console.log("Backend server is running! http://localhost:5000");

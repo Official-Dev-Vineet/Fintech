@@ -15,7 +15,6 @@ const Terms = lazy(() => import("./components/Terms"));
 const Cookie = lazy(() => import("./components/Cookie"));
 const Refund = lazy(() => import("./components/Refund"));
 const Contact = lazy(() => import("./components/ContactUs"));
-const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Rental = lazy(() => import("./components/Rental"));
 const AdminLogin = lazy(() => import("./components/admin/Login.jsx"));
@@ -23,6 +22,7 @@ const Dashboard = lazy(() => import("./components/admin/Dashboard.jsx"));
 const Utility = lazy(() => import("./components/admin/Utility.jsx"));
 const Account = lazy(() => import("./components/admin/Account.jsx"));
 const MaintenancePage = lazy(() => import("./helper/PageNotFound.jsx"));
+const Login = lazy(() => import("./components/Login.jsx"));
 const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
@@ -35,7 +35,7 @@ const App = () => {
         <Route path="/legal/cookie-policy" element={<Cookie />} />
         <Route path="/legal/refund-policy" element={<Refund />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/myAccount" element={<Account />} />
@@ -43,7 +43,7 @@ const App = () => {
         <Route path="/admin/utility" element={<Utility />} />
         <Route path="/register" element={<Register />} />
         <Route path="/rental-agreement" element={<Rental />} />
-        <Route path="*" element={<MaintenancePage/>} />
+        <Route path="*" element={<MaintenancePage />} />
       </Route>
     )
   );

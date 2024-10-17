@@ -1,7 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./styles/Register.css";
 import { scrollToTop } from "../helper/Hooks";
 import { Link } from "react-router-dom";
+
+const InputField = ({
+  label,
+  type,
+  name,
+  value,
+  onChange,
+  placeholder,
+  required,
+}) => (
+  <div className="inputGroup">
+    <label htmlFor={name}>{label}</label>
+    {type === "textarea" ? (
+      <textarea
+        name={name}
+        id={name}
+        placeholder={placeholder}
+        rows={5}
+        value={value}
+        onChange={onChange}
+        required={required}
+      />
+    ) : (
+      <input
+        type={type}
+        name={name}
+        id={name}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        required={required}
+      />
+    )}
+  </div>
+);
+
 const Register = () => {
   const [step, setStep] = useState(1);
   const [data, setData] = useState({
@@ -9,49 +45,127 @@ const Register = () => {
     email: "",
     phone: "",
     address: "",
-    password: "",
+    shopName: "",
+    shopAddress: "",
   });
   const [userProfile, setUserProfile] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [otp, setOtp] = useState("");
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [location, setLocation] = useState({ lat: null, lon: null });
+
+  useEffect(() => {
+    const fetchLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setLocation({ lat: latitude, lon: longitude });
+          },
+          (error) => {
+            console.error("Error fetching location:", error);
+            setLocation({ lat: null, lon: null }); // Set to null or handle as needed
+          }
+        );
+      }
+    };
+    fetchLocation();
+  }, []);
 
   const checkData = () => {
-    if (
-      data.name &&
-      data.email &&
-      data.phone &&
-      data.address &&
-      data.password
-    ) {
-      setError(""); // Clear error if all data is correct
+    const { name, email, phone, address } = data;
+    if (name && email && phone && address) {
+      setError("");
       setStep(2);
-      scrollToTop();
     } else {
-      setError("Please fill all the fields");
+      setError("Please fill all personal details");
     }
+    scrollToTop();
   };
 
   const checkOtp = () => {
     if (otp.length === 6) {
-      setIsOtpVerified(true);
-      scrollToTop();
       setStep(4);
       setError("");
     } else {
       setError("Please enter a valid OTP");
     }
+    scrollToTop();
+  };
+
+  const sendOtp = async () => {
+    const { email } = data;
+    // Send OTP logic here
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/sendOtp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Latitude": location.lat,
+            "X-Longitude": location.lon,
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const result = await response.json();
+      if (result.code === 200) {
+        setOtp(result.otp);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const checkCompanyData = () => {
-    if (data.shopName && data.shopAddress) {
+    const { shopName, shopAddress } = data;
+    if (shopName && shopAddress) {
       setStep(3);
+      setOtp();
       setError("");
-      scrollToTop();
+      sendOtp();
     } else {
-      setError("Please fill all details");
+      setError("Please fill all shop details");
+    }
+    scrollToTop();
+  };
+
+  const verifyOtp = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/verifyOtp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            latitude: location.lat,
+            longitude: location.lon,
+          },
+          body: JSON.stringify({
+            otp: otp,
+            email: data.email,
+            phoneNumber: data.phone,
+            name: data.name,
+            address: data.address,
+            companyDetials: {
+              shopName: data.shopName,
+              shopAddress: data.shopAddress,
+            },
+          }),
+        }
+      );
+      const result = await response.json();
+      if (result.code === 200) {
+        setStep(4);
+        setError("");
+      } else {
+        setError("Please enter a valid OTP");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -61,6 +175,41 @@ const Register = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
+
+    // Send registration data to server
+    const formData = new FormData();
+    formData.append("userProfileImage", userProfile);
+    formData.append("email", data.email);
+    try {
+      // Simulate API call or other submission logic here
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/userProfile`, // Update with the correct endpoint
+        {
+          method: "POST",
+          headers: {
+            latitude: location.lat,
+            longitude: location.lon,
+          },
+          body: formData, // Send necessary data
+        }
+      );
+
+      const result = await response.json();
+      if (result.code === 200) {
+        setSuccess(true);
+      } else {
+        setError("Registration failed. Please try again.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,66 +226,38 @@ const Register = () => {
             <>
               <h2 className="subTitle">Personal Details</h2>
               <div className="inputGroups">
-                <div className="inputGroup">
-                  <label htmlFor="name">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Enter your name"
-                    value={data.name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="inputGroup">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    value={data.email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="inputGroup">
-                  <label htmlFor="phone">Phone</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    id="phone"
-                    placeholder="Enter your mobile"
-                    value={data.phone}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="inputGroup">
-                  <label htmlFor="address">Address</label>
-                  <textarea
-                    name="address"
-                    id="address"
-                    placeholder="Enter your address"
-                    rows={5}
-                    value={data.address}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="inputGroup">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Enter a password"
-                    value={data.password}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+                <InputField
+                  label="Name"
+                  type="text"
+                  name="name"
+                  value={data.name}
+                  onChange={handleInputChange}
+                  placeholder="Enter your name"
+                />
+                <InputField
+                  label="Email"
+                  type="email"
+                  name="email"
+                  value={data.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email"
+                />
+                <InputField
+                  label="Phone"
+                  type="tel"
+                  name="phone"
+                  value={data.phone}
+                  onChange={handleInputChange}
+                  placeholder="Enter your mobile"
+                />
+                <InputField
+                  label="Address"
+                  type="textarea"
+                  name="address"
+                  value={data.address}
+                  onChange={handleInputChange}
+                  placeholder="Enter your address"
+                />
               </div>
               <button className="nextBtn" onClick={checkData}>
                 Next
@@ -147,30 +268,22 @@ const Register = () => {
             <>
               <h2 className="subTitle">Shop Details</h2>
               <div className="inputGroups">
-                <div className="inputGroup">
-                  <label htmlFor="shopName">Shop Name</label>
-                  <input
-                    type="text"
-                    name="shopName"
-                    id="shopName"
-                    placeholder="Enter your shop name"
-                    value={data.shopName}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="inputGroup">
-                  <label htmlFor="shopAddress">Shop Address</label>
-                  <textarea
-                    name="shopAddress"
-                    id="shopAddress"
-                    placeholder="Enter your shop address"
-                    rows={5}
-                    value={data.shopAddress}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+                <InputField
+                  label="Shop Name"
+                  type="text"
+                  name="shopName"
+                  value={data.shopName}
+                  onChange={handleInputChange}
+                  placeholder="Enter your shop name"
+                />
+                <InputField
+                  label="Shop Address"
+                  type="textarea"
+                  name="shopAddress"
+                  value={data.shopAddress}
+                  onChange={handleInputChange}
+                  placeholder="Enter your shop address"
+                />
               </div>
               <button className="nextBtn" onClick={checkCompanyData}>
                 Next
@@ -181,52 +294,32 @@ const Register = () => {
             <>
               <h2 className="subTitle">OTP Verification</h2>
               <div className="inputGroups">
-                <div className="inputGroup">
-                  <label htmlFor="otp">Enter OTP</label>
-                  <input
-                    type="text"
-                    name="otp"
-                    id="otp"
-                    placeholder="Enter OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    required
-                  />
-                </div>
+                <InputField
+                  label="Enter OTP"
+                  type="text"
+                  name="otp"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="Enter OTP"
+                />
               </div>
-              <button className="nextBtn" onClick={checkOtp}>
+              <button className="nextBtn" onClick={verifyOtp}>
                 Verify
               </button>
             </>
           )}
-
           {step === 4 && (
             <>
               <h2 className="subTitle">User Profile</h2>
               <div className="inputGroups">
-                <div className="inputGroup">
-                  <label htmlFor="profile">Upload Profile</label>
-                  <input
-                    type="file"
-                    name="profile"
-                    id="profile"
-                    placeholder="Upload your profile"
-                    onChange={(e) => setUserProfile(e.target.files[0])}
-                    required
-                  />
-                </div>
+                <InputField
+                  label="Upload Profile"
+                  type="file"
+                  name="profile"
+                  onChange={(e) => setUserProfile(e.target.files[0])}
+                />
               </div>
-              <button
-                className="nextBtn"
-                onClick={() => {
-                  setLoading(true);
-                  // Simulate API call or other submission logic here
-                  setTimeout(() => {
-                    setSuccess(true);
-                    setLoading(false);
-                  }, 2000); // Simulate 2-second delay for submission
-                }}
-              >
+              <button className="nextBtn" onClick={handleSubmit}>
                 {loading ? "Submitting..." : "Submit"}
               </button>
               {success && (

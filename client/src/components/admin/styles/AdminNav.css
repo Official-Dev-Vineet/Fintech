@@ -1,11 +1,20 @@
 .admin nav {
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0;
+  background-color: var(--primaryColor);
+  z-index: 999;
+}
+.admin nav .max-width {
+  padding: 0 20px;
+  height: 60px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-  background-color: var(--primaryColor);
-  color: #fff;
-  height: 60px;
 }
 
 .adminGridView {
@@ -32,12 +41,66 @@
 .admin nav ul li button {
   background-color: #fff;
   border: none;
-
   color: #000000;
   font-size: 0.9em;
   cursor: pointer;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   border-radius: 5px;
   transition: 0.3s;
+  vertical-align: middle;
   white-space: nowrap;
+  font-family: system-ui, "Open Sans", sans-serif;
+}
+
+.admin nav .menuIcon {
+  font-size: 2rem;
+  background-color: transparent;
+  color: #fff;
+  display: none;
+}
+.admin nav .menu ul li button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.admin nav .menu ul li button .icon {
+  font-size: 1.5rem;
+  color: var(--primaryColor);
+}
+@media screen and (max-width: 768px) {
+  .admin nav .menuIcon {
+    display: block;
+  }
+  .admin nav .menu {
+    position: absolute;
+    top: 100%;
+    right: -100%;
+    width: 200px;
+    z-index: 99999;
+    height: calc(100vh - 60px);
+    flex-direction: column;
+    background-color: #fff;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  }
+  .admin nav .menu.active {
+    right: 0;
+  }
+  .admin nav .menu ul {
+    flex-direction: column;
+  }
+  .admin nav .menu ul li {
+    width: 100%;
+  }
+  .admin nav .menu ul li button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .adminGridView {
+    grid-template-columns: 1fr;
+  }
 }

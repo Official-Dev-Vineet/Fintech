@@ -30,10 +30,10 @@ const Login = () => {
   }, []);
 
   const fetchEmail = async () => {
-    if (!location) {
-      console.error("Location not available. Cannot make API call.");
-      return;
-    }
+    // if (!location) {
+    //   console.error("Location not available. Cannot make API call.");
+    //   return;
+    // }
 
     setLoading(true);
     const url = import.meta.env.VITE_SERVER_URL;
@@ -41,8 +41,8 @@ const Login = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Latitude: location.latitude,
-        Longitude: location.longitude,
+        // Latitude: location.latitude,
+        // Longitude: location.longitude,
       },
       body: JSON.stringify(data),
     });
@@ -53,10 +53,10 @@ const Login = () => {
   };
 
   const verifyOtp = async () => {
-    if (!location) {
-      console.error("Location not available. Cannot make API call.");
-      return;
-    }
+    // if (!location) {
+    //   console.error("Location not available. Cannot make API call.");
+    //   return;
+    // }
 
     setLoading(true);
     const url = import.meta.env.VITE_SERVER_URL;
@@ -64,8 +64,8 @@ const Login = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Latitude: location.latitude,
-        Longitude: location.longitude,
+        // Latitude: location.latitude,
+        // Longitude: location.longitude,
       },
       body: JSON.stringify(data),
     });
@@ -79,16 +79,17 @@ const Login = () => {
 
   const submitData = (e) => {
     e.preventDefault();
-    if (!location) {
-      alert("Location not available. Please allow location access.");
-      return;
-    }
+    // if (!location) {
+    //   alert("Location not available. Please allow location access.");
+    //   return;
+    // }
     isEmailCheck ? verifyOtp() : fetchEmail();
   };
 
   return (
     <main className="login max-width">
       <form onSubmit={submitData} className={loading ? "loading" : ""}>
+        <h1 className="subTitle">Admin Login</h1>
         <div className="inputField">
           <label htmlFor="email">Email</label>
           <input

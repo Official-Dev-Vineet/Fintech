@@ -6,6 +6,7 @@ const Rental = () => {
   // Initialize state from localStorage if available
   const [step, setStep] = useState(1);
   const [isShowing, setIsShowing] = useState(false);
+  const [phone, setPhone] = useState("");
   const [data, setData] = useState({
     landlords: [
       {
@@ -38,6 +39,13 @@ const Rental = () => {
     window.scrollTo(0, 0);
   }, [step]);
 
+  const checkPhone = () => {
+    if (phone.length === 10 && /^\d*$/.test(phone)) {
+      setStep(6);
+    } else {
+      alert("Please enter a valid phone number");
+    }
+  };
   const handleInputChange2 = (index, field, value) => {
     const updatedOpponents = [...data.tenants];
     if (updatedOpponents[index]) {
@@ -64,7 +72,7 @@ const Rental = () => {
 
   const checkProperty = () => {
     if (data.propertyType && data.propertyName) {
-      setStep(8);
+      setStep(9);
     } else {
       alert("Please select property type");
     }
@@ -106,7 +114,7 @@ const Rental = () => {
   };
 
   const stepUpDelivery = () => {
-    if (data.delivery) {
+    if (data.delivery && data.stamp) {
       setStep(5);
     } else {
       alert("Please select a delivery type");
@@ -162,7 +170,7 @@ const Rental = () => {
       landlord.name &&
       landlord.address
     ) {
-      setStep(6);
+      setStep(7);
       console.log(data);
     } else {
       alert("Please fill out landlord details");
@@ -180,7 +188,7 @@ const Rental = () => {
       opponent.name &&
       opponent.address
     ) {
-      setStep(7);
+      setStep(8);
     } else {
       alert("Please fill out your personal details");
     }
@@ -189,12 +197,12 @@ const Rental = () => {
   const validateProperty = () => {
     if (data.propertyPrice && data.propertyAddress && data.propertyName) {
       alert(
-        "After you have completed the payment, you can edit the details and submit to continue"
+        "After you have completed the payment, you can edit the details or submit the form."
       );
       setStep(8);
       console.log(data);
     } else {
-      alert("Please select a property");
+      alert("Please fill valid property details");
     }
   };
   const LeasePage = useMemo(() => {
@@ -252,6 +260,17 @@ const Rental = () => {
                       }))
                     }
                   />
+                  <input
+                    type="button"
+                    className={`input ${data.type === "other" && "active"}`}
+                    value="Other"
+                    onClick={() =>
+                      setData((pre) => ({
+                        ...pre,
+                        type: "other",
+                      }))
+                    }
+                  />
                 </div>
                 <div className="btnGroup">
                   <button className="btn" onClick={() => setStep(1)}>
@@ -271,7 +290,7 @@ const Rental = () => {
                   <input
                     type="button"
                     className={`input ${data.state === "haryana" && "active"}`}
-                    value="Haryana (Stamp Paper - 101)"
+                    value="Haryana"
                     onClick={() =>
                       setData((pre) => ({
                         ...pre,
@@ -303,48 +322,153 @@ const Rental = () => {
 
             {step === 4 && (
               <div className="form">
-                <p>Select the preferred mode of delivery:</p>
+                <p>Select Type of Stamp :</p>
                 <div className="inputField">
                   <input
                     type="button"
-                    className={`input ${
-                      data.delivery === "softcopy" && "active"
-                    }`}
-                    value="Soft Copy (Rs. 250)"
+                    className={`input ${data.stamp === "h10" && "active"}
+                    `}
+                    value="Stamp ( Rs. 10 )"
                     onClick={() =>
                       setData((pre) => ({
                         ...pre,
-                        delivery: "softcopy",
+                        stamp: "h10",
                       }))
                     }
                   />
                   <input
                     type="button"
-                    className={`input ${
-                      data.delivery === "pickup" && "active"
-                    }`}
-                    value="Pickup From Counter (Rs. 250)"
+                    className={`input ${data.stamp === "h20" && "active"}`}
+                    value="Stamp ( Rs. 20 )"
                     onClick={() =>
                       setData((pre) => ({
                         ...pre,
-                        delivery: "pickup",
+                        stamp: "h20",
                       }))
                     }
                   />
                   <input
                     type="button"
-                    className={`input ${
-                      data.delivery === "homedelivery" && "active"
-                    }`}
-                    value="Home Delivery   (Rs. 250 + Delivery Charge)"
+                    className={`input ${data.stamp === "h50" && "active"}`}
+                    value="Stamp ( Rs. 50 )"
                     onClick={() =>
                       setData((pre) => ({
                         ...pre,
-                        delivery: "homedelivery",
+                        stamp: "h50",
+                      }))
+                    }
+                  />
+                  <input
+                    type="button"
+                    className={`input ${data.stamp === "h101" && "active"}`}
+                    value="Stamp ( Rs. 101 )"
+                    onClick={() =>
+                      setData((pre) => ({
+                        ...pre,
+                        stamp: "h101",
                       }))
                     }
                   />
                 </div>
+                {data.stamp && (
+                  <>
+                    <p>Select the preferred mode of delivery:</p>
+                    <div className="inputField">
+                      <input
+                        type="button"
+                        className={`input ${
+                          data.delivery === "softcopy" && "active"
+                        }`}
+                        value={
+                          data.stamp === "10"
+                            ? "Soft Copy (Rs. 150)"
+                            : data.stamp === "h20"
+                            ? "Soft Copy (Rs. 170)"
+                            : data.stamp === "h50"
+                            ? "Soft Copy (Rs. 200)"
+                            : "Soft Copy (Rs. 250)"
+                        }
+                        onClick={() =>
+                          setData((pre) => ({
+                            ...pre,
+                            delivery: "softcopy",
+                          }))
+                        }
+                      />
+                      <input
+                        type="button"
+                        className={`input ${
+                          data.delivery === "pickup" && "active"
+                        }`}
+                        value={
+                          data.stamp === "h10"
+                            ? "Pickup From Counter (Rs. 150)"
+                            : data.stamp === "h20"
+                            ? "Pickup From Counter (Rs. 170)"
+                            : data.stamp === "h50"
+                            ? "Pickup From Counter (Rs. 200)"
+                            : "Pickup From Counter (Rs. 250)"
+                        }
+                        onClick={() =>
+                          setData((pre) => ({
+                            ...pre,
+                            delivery: "pickup",
+                          }))
+                        }
+                      />
+                      <input
+                        type="button"
+                        className={`input ${
+                          data.delivery === "homedelivery" && "active"
+                        }`}
+                        value={
+                          data.stamp === "h10"
+                            ? "Home Delivery (Rs. 150 + Delivery Charge)"
+                            : data.stamp === "h20"
+                            ? "Home Delivery (Rs. 170 + Delivery Charge)"
+                            : data.stamp === "h50"
+                            ? "Home Delivery (Rs. 200 + Delivery Charge)"
+                            : "Home Delivery (Rs. 250 + Delivery Charge)"
+                        }
+                        onClick={() =>
+                          setData((pre) => ({
+                            ...pre,
+                            delivery: "homedelivery",
+                          }))
+                        }
+                      />
+                    </div>
+                  </>
+                )}
+                {data.delivery === "homedelivery" && (
+                  <div
+                    style={{
+                      marginTop: "20px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                    }}
+                  >
+                    <label htmlFor="deliveryCharge">
+                      Enter Delivery Address
+                    </label>
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Delivery Address"
+                      id="deliveryCharge"
+                      autoComplete="on"
+                      required
+                      value={data.deliveryAddress}
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          deliveryAddress: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                )}
                 <div className="btnGroup">
                   <button className="btn" onClick={() => setStep(3)}>
                     Previous
@@ -355,8 +479,31 @@ const Rental = () => {
                 </div>
               </div>
             )}
-
             {step === 5 && (
+              <div className="form">
+                <p>Enter Phone Number to continue.</p>
+                <div className="inputField">
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Enter Phone Number"
+                    value={phone}
+                    maxLength={10}
+                    pattern="[0-9]{10}"
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+                <div className="btnGroup">
+                  <button className="btn" onClick={() => setStep(4)}>
+                    Previous
+                  </button>
+                  <button className="btn" onClick={checkPhone}>
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+            {step === 6 && (
               <div className="form">
                 <p>Enter Landlord&apos;s Details</p>
                 {data.landlords.map((landlord, index) => (
@@ -644,8 +791,10 @@ const Rental = () => {
                     <div className="inputField">
                       <label>Contact Number:</label>
                       <input
-                        type="text"
+                        type="tel"
                         className="input"
+                        maxLength={10}
+                        pattern="[0-9]{10}"
                         value={landlord.contact}
                         onChange={(e) =>
                           handleInputChange1(index, "contact", e.target.value)
@@ -683,6 +832,7 @@ const Rental = () => {
                         <input
                           type="text"
                           className="input"
+                          maxLength={12}
                           value={landlord.idNumber}
                           onChange={(e) =>
                             handleInputChange1(
@@ -713,7 +863,7 @@ const Rental = () => {
                     Add Another Landlord
                   </button>
                   <div className="btnGroup">
-                    <button className="btn" onClick={() => setStep(4)}>
+                    <button className="btn" onClick={() => setStep(5)}>
                       Previous
                     </button>
                     <button className="btn" onClick={collectPersonalDetails}>
@@ -724,7 +874,7 @@ const Rental = () => {
               </div>
             )}
 
-            {step === 6 && (
+            {step === 7 && (
               <div className="form">
                 <p>Enter Tenant&apos;s Details</p>
                 {data.tenants.map((landlord, index) => (
@@ -1006,7 +1156,9 @@ const Rental = () => {
                     <div className="inputField">
                       <label>Contact Number:</label>
                       <input
-                        type="text"
+                        type="tel"
+                        maxLength={10}
+                        pattern="[0-9]{10}"
                         className="input"
                         value={landlord.contact}
                         onChange={(e) =>
@@ -1045,6 +1197,7 @@ const Rental = () => {
                         <input
                           type="text"
                           className="input"
+                          maxLength={12}
                           value={landlord.idNumber}
                           onChange={(e) =>
                             handleInputChange2(
@@ -1075,7 +1228,7 @@ const Rental = () => {
                     Add Another Tenant
                   </button>
                   <div className="btnGroup">
-                    <button className="btn" onClick={() => setStep(5)}>
+                    <button className="btn" onClick={() => setStep(6)}>
                       Previous
                     </button>
                     <button className="btn" onClick={collectTenantDetails}>
@@ -1086,7 +1239,7 @@ const Rental = () => {
               </div>
             )}
 
-            {step === 7 && (
+            {step === 8 && (
               <>
                 <p>Type Of Property:</p>
                 <div className="inputField">
@@ -1315,19 +1468,35 @@ const Rental = () => {
                       </select>
                     </div>
                     <div className="inputField">
-                      <label>Floor No:</label>
-                      <input
-                        type="text"
-                        className="input"
-                        value={data.floorNo || ""}
-                        placeholder="Enter Floor No"
+                      <label htmlFor="floorNmb"> Floor No:</label>
+                      <select
+                        id="floorNmb"
+                        value={data.floorNo}
                         onChange={(e) =>
                           setData((pre) => ({
                             ...pre,
                             floorNo: e.target.value,
                           }))
                         }
-                      />
+                      >
+                        <option value="" selected disabled>
+                          select
+                        </option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                      </select>
                     </div>
                     <div
                       className="inputField"
@@ -1370,8 +1539,36 @@ const Rental = () => {
                     </div>
                   </>
                 )}
+                {data.propertyName === "house" && (
+                  <div className="inputField">
+                    <label>Area Of House (in sq.yrd. ):</label>
+                    <input
+                      className="input"
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          houseArea: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                )}
+                {data.propertyName === "apartment" && (
+                  <div className="inputField">
+                    <label>Area Of Apartment (in sq.ft. ):</label>
+                    <input
+                      className="input"
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          houseArea: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                )}
                 <div className="btnGroup">
-                  <button className="btn" onClick={() => setStep(6)}>
+                  <button className="btn" onClick={() => setStep(7)}>
                     Previous
                   </button>
                   <button className="btn" onClick={checkProperty}>
@@ -1380,7 +1577,7 @@ const Rental = () => {
                 </div>
               </>
             )}
-            {step === 8 && (
+            {step === 9 && (
               <div className="form">
                 <p>Fill the details of Property:</p>
                 <div className="inputField">
@@ -1517,7 +1714,7 @@ const Rental = () => {
                 </div>
                 <div className="inputField">
                   <label>
-                    Electricity Bill (if applicable):{" "}
+                    Electricity Bill :{" "}
                     <label htmlFor="eUnit">
                       <span>in Unit</span>
                       <input
@@ -1589,100 +1786,195 @@ const Rental = () => {
                   )}
                 </div>
                 <div className="inputField">
-                  <label>
-                    Water Supply Bill (if applicable):
-                    <label htmlFor="fixedWa">
-                      <span>Fixed rate (Rs)</span>
-                      <input
-                        type="radio"
-                        name="water"
-                        id="fixedWa"
-                        checked={data.wFix || false}
-                        onChange={(e) => {
-                          setData((pre) => {
-                            return {
-                              ...pre,
-                              wFix: e.target.checked,
-                              wUnit: false,
-                              wSociety: false,
-                            };
-                          });
-                        }}
-                      />
-                    </label>
-                    <label htmlFor="unitwa">
-                      <span>In Unit</span>
-                      <input
-                        type="radio"
-                        name="water"
-                        checked={data.wUnit || false}
-                        id="unitwa"
-                        onChange={(e) => {
-                          setData((pre) => {
-                            return {
-                              ...pre,
-                              wUnit: e.target.checked,
-                              wSociety: false,
-                              wFix: false,
-                            };
-                          });
-                        }}
-                      />
-                    </label>
-                    <label htmlFor="fixedWaSoc">
-                      <span>Direct To Concern Authority</span>
-                      <input
-                        type="radio"
-                        name="water"
-                        checked={data.wSociety || false}
-                        id="fixedWaSoc"
-                        onChange={(e) => {
-                          setData((pre) => {
-                            return {
-                              ...pre,
-                              wSociety: e.target.checked,
-                              wUnit: false,
-                              wFix: false,
-                            };
-                          });
-                        }}
-                      />
-                    </label>
-                  </label>
-                  {!data.wSociety && (
+                  <div className="inputGroup">
+                    <label>Furniture and other Details:</label>
                     <input
-                      type="text"
-                      className="input"
-                      value={data?.waterBill}
-                      placeholder={
-                        data.wFix ? "Rs" : data.wUnit ? "Per Unit" : ""
-                      }
+                      type="radio"
+                      name="furniture"
+                      id="feryes"
+                      checked={data.furniture === true}
+                      value={true}
                       onChange={(e) =>
                         setData((pre) => ({
                           ...pre,
-                          waterBill: e.target.value,
+                          furniture: true,
+                        }))
+                      }
+                    />
+                    <label htmlFor="feryes">Yes</label>
+                    <input
+                      type="radio"
+                      name="furniture"
+                      id="ferno"
+                      checked={data.furniture === false}
+                      value={false}
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          furniture: false,
+                        }))
+                      }
+                    />
+                    <label htmlFor="ferno">No</label>
+                  </div>
+
+                  {data.furniture === true && (
+                    <input
+                      type="text"
+                      className="input"
+                      value={data.furnitureDetails || ""}
+                      placeholder="Furniture and other Details"
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          furnitureDetails: e.target.value,
+                        }))
+                      }
+                    />
+                  )}
+                </div>
+
+                <div className="inputField">
+                  <div className="inputGroup">
+                    <label>Water Charges</label>
+                    <input
+                      type="radio"
+                      name="waterCharge"
+                      id="watyes"
+                      checked={data.waterCharge === true}
+                      value={true}
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          waterCharge: true,
+                        }))
+                      }
+                    />
+                    <label htmlFor="watyes">Yes</label>
+                    <input
+                      type="radio"
+                      name="waterCharge"
+                      id="watno"
+                      checked={data.waterCharge === false}
+                      value={false}
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          waterCharge: false,
+                        }))
+                      }
+                    />
+                    <label htmlFor="watno">No</label>
+                  </div>
+
+                  {data.waterCharge === true && (
+                    <div className="inputField">
+                      <div className="inputGroup">
+                        <label htmlFor="fixedWa">
+                          <span>Fixed rate (Rs)</span>
+                          <input
+                            type="radio"
+                            name="water"
+                            id="fixedWa"
+                            checked={data.wFix || false}
+                            onChange={(e) => {
+                              setData((pre) => {
+                                return {
+                                  ...pre,
+                                  wFix: e.target.checked,
+                                  wSociety: false,
+                                };
+                              });
+                            }}
+                          />
+                        </label>
+                        <label htmlFor="fixedWaSoc">
+                          <span>Direct To Concern Authority</span>
+                          <input
+                            type="radio"
+                            name="water"
+                            checked={data.wSociety || false}
+                            id="fixedWaSoc"
+                            onChange={(e) => {
+                              setData((pre) => {
+                                return {
+                                  ...pre,
+                                  wSociety: e.target.checked,
+                                  wFix: false,
+                                };
+                              });
+                            }}
+                          />
+                        </label>
+                      </div>
+                      {!data.wSociety && (
+                        <input
+                          type="text"
+                          className="input"
+                          value={data?.waterBill}
+                          placeholder={data.wFix && "Rs"}
+                          onChange={(e) =>
+                            setData((pre) => ({
+                              ...pre,
+                              waterBill: e.target.value,
+                            }))
+                          }
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div className="inputField">
+                  <div className="inputGroup">
+                    <label>Society Maintenance:</label>
+                    <input
+                      type="radio"
+                      name="maintenance"
+                      id="socyes"
+                      value={true}
+                      checked={data.societyMaintenance === true}
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          societyMaintenance: true,
+                        }))
+                      }
+                    />
+                    <label htmlFor="socyes">Yes</label>
+                    <input
+                      type="radio"
+                      name="maintenance"
+                      id="socno"
+                      value={false}
+                      checked={data.societyMaintenance === false}
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          societyMaintenance: false,
+                        }))
+                      }
+                    />
+                    <label htmlFor="socno">No</label>
+                  </div>
+
+                  {data.societyMaintenance === true && (
+                    <input
+                      type="text"
+                      className="input"
+                      value={data.societyMaintenanceCharge || ""}
+                      placeholder="Rs. 0.00"
+                      onChange={(e) =>
+                        setData((pre) => ({
+                          ...pre,
+                          societyMaintenanceCharge: e.target.value,
                         }))
                       }
                     />
                   )}
                 </div>
                 <div className="inputField">
-                  <label>Society Maintenance (if applicable):</label>
-                  <input
-                    type="text"
-                    className="input"
-                    value={data.societyMaintenance || ""}
-                    placeholder="Rs. 0.00"
-                    onChange={(e) =>
-                      setData((pre) => ({
-                        ...pre,
-                        societyMaintenance: e.target.value,
-                      }))
-                    }
-                  />
-                </div>
-                <div className="inputField">
-                  <label> Start Lease Date :</label>
+                  <label>Lease Starting Date :</label>
                   <input
                     type="date"
                     className="input"
@@ -1713,15 +2005,12 @@ const Rental = () => {
                   />
                 </div>
                 <div className="inputField">
-                  <label>
-                    {" "}
-                    Lease period Extend Rate (After 11<sup>th</sup> month):
+                  <label htmlFor="rentextextendRate">
+                    Percentage of extension in rent on renewal :
                   </label>
-                  <input
-                    type="number"
-                    className="input"
-                    min={1}
-                    max={30}
+                  <select
+                    name="rentextextendRate"
+                    id="rentextextendRate"
                     value={data.rentextextendRate || ""}
                     onChange={(e) =>
                       setData((pre) => ({
@@ -1729,7 +2018,31 @@ const Rental = () => {
                         rentextextendRate: e.target.value,
                       }))
                     }
-                  />
+                  >
+                    <option value="" disabled selected>
+                      Select
+                    </option>
+                    <option value="1">1%</option>
+                    <option value="2">2%</option>
+                    <option value="3">3%</option>
+                    <option value="4">4%</option>
+                    <option value="5">5%</option>
+                    <option value="6">6%</option>
+                    <option value="7">7%</option>
+                    <option value="8">8%</option>
+                    <option value="9">9%</option>
+                    <option value="10">10%</option>
+                    <option value="11">11%</option>
+                    <option value="12">12%</option>
+                    <option value="13">13%</option>
+                    <option value="14">14%</option>
+                    <option value="15">15%</option>
+                    <option value="16">16%</option>
+                    <option value="17">17%</option>
+                    <option value="18">18%</option>
+                    <option value="19">19%</option>
+                    <option value="20">20%</option>
+                  </select>
                 </div>
                 {/* Terms and Conditions Section */}
                 <div className="inputField">
@@ -1776,11 +2089,11 @@ const Rental = () => {
                       }
                     }}
                   >
-                    Add Term 
+                    Add Term
                   </button>
                 </div>
                 <div className="inputField">
-                  <label> Number of Tanancy months :</label>
+                  <label> Number of Tenancy months :</label>
                   <select
                     value={data?.numberOfMonth || ""}
                     onChange={(e) => {
@@ -1798,7 +2111,7 @@ const Rental = () => {
                   </select>
                 </div>
                 <div className="inputField">
-                  <label> Lock in period (in months) :</label>
+                  <label> Lock in period (if applicable) :</label>
                   <select
                     value={data.lockInPeriod || ""}
                     onChange={(e) => {
